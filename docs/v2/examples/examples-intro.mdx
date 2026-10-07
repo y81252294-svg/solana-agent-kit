@@ -1,0 +1,137 @@
+---
+title: 'Examples'
+description: 'Implementation examples for the Solana Agent Kit v2'
+icon: 'code'
+---
+
+# Examples
+
+This section contains a collection of examples demonstrating various implementations of the Solana Agent Kit v2. These examples are organized by category to help you find the right starting point for your project.
+
+## Examples Overview
+
+<CardGroup cols={2}>
+  <Card title="DeFi Examples" icon="chart-line" href="#defi-examples">
+    Market making, cross-chain operations, and DEX integration examples
+  </Card>
+  <Card title="Embedded Wallets" icon="wallet" href="#embedded-wallets">
+    Examples using Turnkey, Privy, Crossmint, and Para wallet solutions
+  </Card>
+  <Card title="MCP (Model Context Provider)" icon="server" href="#mcp-model-context-provider">
+    Server implementation for Model Context Protocol with Claude Desktop
+  </Card>
+  <Card title="Miscellaneous" icon="cubes" href="#miscellaneous">
+    Persistent agents, LangChain and LangGraph integrations
+  </Card>
+  <Card title="Social" icon="message" href="#social">
+    Discord and Telegram bot integration examples
+  </Card>
+  <Card title="n8n Integration" icon="sitemap" href="#n8n-integration">
+    Workflow automation with n8n for no-code solutions
+  </Card>
+</CardGroup>
+
+## DeFi Examples
+
+| Example | Description |
+|---------|-------------|
+| [market-making-agent](/examples/defi/market-making-agent) | Agent implementation for market making on Solana DEXs |
+| [wormhole-nextjs-agent](/examples/defi/wormhole-nextjs-agent) | Cross-chain agent using Wormhole with Next.js framework |
+| [okx-dex-starter](/examples/defi/okx-dex-starter) | Starter template for building agents interacting with OKX DEX |
+
+## Embedded Wallets
+
+| Example | Description |
+|---------|-------------|
+| [turnkey-agent-starter](/examples/embedded-wallets/turnkey-agent-starter) | Agent implementation using Turnkey's secure embedded wallet solution |
+| [privy-agent-tanstack-starter](/examples/embedded-wallets/privy-agent-tanstack-starter) | Example using Privy wallet integration with TanStack for state management |
+| [crossmint-sak-v2](/examples/embedded-wallets/crossmint-sak-v2) | Implementation using Crossmint's wallet infrastructure |
+| [para-plugin-example](/examples/embedded-wallets/para-plugin-example) | Example demonstrating Para wallet plugin integration |
+
+## MCP (Model Context Provider)
+
+| Example | Description |
+|---------|-------------|
+| [agent-kit-mcp-server](/examples/mcp/agent-kit-mcp-server) | Server implementation for Model Context Protocol with Solana Agent Kit |
+
+## Miscellaneous
+
+| Example | Description |
+|---------|-------------|
+| [persistent-agent](/examples/misc/persistent-agent) | Example of an agent with persistent state between interactions |
+| [agent-kit-nextjs-langchain](/examples/misc/agent-kit-nextjs-langchain) | Integration of Agent Kit with Next.js and LangChain |
+| [orbofi-personality-engine](/examples/misc/orbofi-personality-engine) | Example using OrboFi personality engine for more engaging agents |
+| [agent-kit-langgraph](/examples/misc/agent-kit-langgraph) | Integration with LangGraph for complex agent workflows |
+
+## Social
+
+| Example | Description |
+|---------|-------------|
+| [discord-bot-starter](/examples/social/discord-bot-starter) | Starter template for building Discord bots with Agent Kit |
+| [tg-bot-starter](/examples/social/tg-bot-starter) | Template for Telegram bot integration |
+
+## n8n Integration
+
+A comprehensive [node setup](/examples/n8n-solana-agent) for integrating Solana Agent Kit with the n8n workflow automation platform. This allows creation of no-code/low-code blockchain workflows.
+
+## Getting Started
+
+Each example includes its own README with specific instructions. To get started:
+
+1. Choose an example that best fits your use case
+2. Navigate to the example directory
+3. Follow the installation and setup instructions in the example's README
+
+Most examples can be run with a simple set of commands:
+
+```bash
+# Clone the repository
+git clone https://github.com/solana-labs/agent-kit-v2
+cd agent-kit-v2
+
+# Navigate to the example
+cd examples/[example-category]/[example-name]
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+## Prerequisites
+
+Most examples require:
+
+- Node.js (version specified in each example)
+- npm, yarn, or pnpm (as specified)
+- Basic understanding of Solana and blockchain concepts
+- API keys (OpenAI, Solana RPC, etc.) as specified in each example
+
+<Accordion title="Tips for setting up your environment">
+  - Create a `.env.local` file in the example directory to store your API keys
+  - Use a development wallet with a small amount of SOL for testing
+  - Most examples work with devnet or testnet by default
+  - Check the specific RPC requirements in each example's README
+</Accordion>
+
+## Customizing Examples
+
+The examples are designed to be starting points for your own implementations. Here are some ways you can extend them:
+
+- Add additional plugins to expand functionality
+- Customize prompts to create specialized agent behaviors
+- Integrate with different wallet providers
+- Connect to additional DeFi protocols
+- Modify the UI components to match your application's design
+
+## Contributing
+
+If you'd like to contribute a new example, please follow the standard contribution guidelines in the main repository. New examples should:
+
+- Include a comprehensive README.md
+- Be well-documented with comments
+- Follow the code structure of existing examples
+- Include any necessary environment variable templates
+
+For questions or issues with specific examples, please reference the individual example's documentation first. For general questions about the Solana Agent Kit, refer to the main documentation.

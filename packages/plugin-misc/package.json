@@ -1,0 +1,60 @@
+{
+  "name": "@solana-agent-kit/plugin-misc",
+  "version": "2.0.6",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf dist .turbo node_modules",
+    "build": "tsup src/index.ts --dts --clean --format cjs,esm --out-dir dist",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/y81252294-svg/solana-agent-kit.git"
+  },
+  "homepage": "https://github.com/y81252294-svg/solana-agent-kit/tree/v2/packages/plugin-misc",
+  "author": {
+    "name": "Shourya Goyal",
+    "url": "https://www.linkedin.com/in/shourya-goyal-804632254/"
+  },
+  "dependencies": {
+    "@0xobedient/memetus-pumpfun-sdk": "^1.0.9",
+    "@alloralabs/allora-sdk": "^0.1.0",
+    "@bonfida/spl-name-service": "^3.0.8",
+    "@coral-xyz/anchor": "^0.31.1",
+    "@onsol/tldparser": "^0.6.7",
+    "@solana/codecs": "^2.1.0",
+    "@solana/spl-token": "^0.4.9",
+    "@solanafm/explorer-kit": "^1.2.0",
+    "@solanafm/explorer-kit-idls": "^1.1.4",
+    "@sqds/multisig": "^2.1.3",
+    "@switchboard-xyz/common": "^2.5.17",
+    "bs58": "^6.0.0",
+    "redaxios": "^0.5.1",
+    "rpc-websockets": "^10.0.0",
+    "solana-agent-kit": "workspace:*",
+    "zod": "^3.24.1"
+  },
+  "peerDependencies": {
+    "@solana/web3.js": "^1.98.2",
+    "solana-agent-kit": "2.0.5"
+  }
+}

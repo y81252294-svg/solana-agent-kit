@@ -1,0 +1,349 @@
+---
+title: 'Sanctum'
+description: 'Learn how to interact with Sanctum for LST (Liquid Staking Token) operations'
+---
+
+Interact with Sanctum to manage Liquid Staking Tokens (LSTs) on Solana. Sanctum provides a unified liquidity layer for LSTs, allowing users to add liquidity, swap between different LSTs, and access information about APYs, prices, and TVL.
+
+## Usage
+
+```typescript
+// Get APY for different LSTs
+const apys = await agent.methods.sanctumGetLstApy([
+  "INF", 
+  "pwrsol", 
+  "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So", 
+  "laineSOL"
+]);
+
+// Swap between LSTs
+const signature = await agent.methods.sanctumSwapLst(
+  "So11111111111111111111111111111111111111112", // Input LST mint
+  "1000000000", // Amount (1 SOL)
+  "900000000", // Quoted amount
+  5000, // Priority fee
+  "bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1" // Output LST mint
+);
+
+// Add liquidity to Sanctum pool
+const signature = await agent.methods.sanctumAddLiquidity(
+  "So11111111111111111111111111111111111111112", // LST mint
+  "1000000000", // Amount (1 SOL)
+  "900000000", // Quoted amount
+  5000 // Priority fee
+);
+```
+
+## Methods
+
+### getLstApy
+
+Get the APY (Annual Percentage Yield) for specified LSTs on Sanctum.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| inputs | string[] | Yes | Array of LST mint addresses or symbols |
+
+#### Example
+```typescript
+const apys = await agent.methods.sanctumGetLstApy([
+  "INF", 
+  "pwrsol", 
+  "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So", 
+  "laineSOL"
+]);
+```
+
+### getLstPrice
+
+Get the current price of specified LSTs on Sanctum.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| inputs | string[] | Yes | Array of LST mint addresses or symbols |
+
+#### Example
+```typescript
+const prices = await agent.methods.sanctumGetLstPrice([
+  "INF", 
+  "pwrsol", 
+  "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So", 
+  "laineSOL"
+]);
+```
+
+### getLstTvl
+
+Get the Total Value Locked (TVL) for specified LSTs on Sanctum.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| inputs | string[] | Yes | Array of LST mint addresses or symbols |
+
+#### Example
+```typescript
+const tvl = await agent.methods.sanctumGetLstTvl([
+  "INF", 
+  "pwrsol", 
+  "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So", 
+  "laineSOL"
+]);
+```
+
+### getOwnedLst
+
+Get all LSTs owned by the current wallet that are supported by Sanctum.
+
+#### Parameters
+None
+
+#### Example
+```typescript
+const ownedLsts = await agent.methods.sanctumGetOwnedLst();
+```
+
+### swapLst
+
+Swap one LST for another using Sanctum's unified liquidity layer.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| inputLstMint | string | Yes | Input LST mint address |
+| amount | string | Yes | Amount to swap (in smallest units) |
+| quotedAmount | string | Yes | Expected output amount |
+| priorityFee | number | Yes | Priority fee for the transaction |
+| outputLstMint | string | Yes | Output LST mint address |
+
+#### Example
+```typescript
+const signature = await agent.methods.sanctumSwapLst(
+  "So11111111111111111111111111111111111111112", // Input LST mint
+  "1000000000", // Amount (1 SOL)
+  "900000000", // Quoted amount
+  5000, // Priority fee
+  "bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1" // Output LST mint
+);
+```
+
+### addLiquidity
+
+Add liquidity to a Sanctum pool.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| lstMint | string | Yes | LST mint address |
+| amount | string | Yes | Amount to add (in smallest units) |
+| quotedAmount | string | Yes | Expected INF token amount |
+| priorityFee | number | Yes | Priority fee for the transaction |
+
+#### Example
+```typescript
+const signature = await agent.methods.sanctumAddLiquidity(
+  "So11111111111111111111111111111111111111112", // LST mint
+  "1000000000", // Amount (1 SOL)
+  "900000000", // Quoted amount
+  5000 // Priority fee
+);
+```
+
+### removeLiquidity
+
+Remove liquidity from a Sanctum pool.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| lstMint | string | Yes | LST mint address |
+| amount | string | Yes | Amount to remove (in smallest units) |
+| quotedAmount | string | Yes | Expected INF token to burn |
+| priorityFee | number | Yes | Priority fee for the transaction |
+
+#### Example
+```typescript
+const signature = await agent.methods.sanctumRemoveLiquidity(
+  "So11111111111111111111111111111111111111112", // LST mint
+  "1000000000", // Amount (1 SOL)
+  "900000000", // Quoted amount
+  5000 // Priority fee
+);
+```
+
+## Example Implementation
+
+```typescript
+import { SolanaAgentKit } from "solana-agent-kit";
+import { PublicKey } from "@solana/web3.js";
+
+async function sanctumOperations(agent: SolanaAgentKit) {
+  try {
+    // Get APY for different LSTs
+    const apys = await agent.methods.sanctumGetLstApy([
+      "INF", 
+      "pwrsol", 
+      "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So", 
+      "laineSOL"
+    ]);
+    console.log("LST APYs:", apys);
+
+    // Get prices for different LSTs
+    const prices = await agent.methods.sanctumGetLstPrice([
+      "INF", 
+      "pwrsol", 
+      "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So", 
+      "laineSOL"
+    ]);
+    console.log("LST Prices:", prices);
+
+    // Get TVL for different LSTs
+    const tvl = await agent.methods.sanctumGetLstTvl([
+      "INF", 
+      "pwrsol", 
+      "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So", 
+      "laineSOL"
+    ]);
+    console.log("LST TVL:", tvl);
+
+    // Get owned LSTs
+    const ownedLsts = await agent.methods.sanctumGetOwnedLst();
+    console.log("Owned LSTs:", ownedLsts);
+
+    // Add liquidity to a Sanctum pool
+    const addLiquidityTx = await agent.methods.sanctumAddLiquidity(
+      "So11111111111111111111111111111111111111112", // SOL mint
+      "1000000000", // 1 SOL
+      "900000000", // Quoted amount
+      5000 // Priority fee
+    );
+    console.log("Add liquidity transaction:", addLiquidityTx);
+
+    // Swap LSTs
+    const swapTx = await agent.methods.sanctumSwapLst(
+      "So11111111111111111111111111111111111111112", // SOL mint
+      "1000000000", // 1 SOL
+      "900000000", // Quoted amount
+      5000, // Priority fee
+      "bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1" // bSOL mint
+    );
+    console.log("Swap LST transaction:", swapTx);
+    
+    // Remove liquidity from a Sanctum pool
+    const removeLiquidityTx = await agent.methods.sanctumRemoveLiquidity(
+      "So11111111111111111111111111111111111111112", // SOL mint
+      "1000000000", // 1 SOL
+      "900000000", // Quoted amount
+      5000 // Priority fee
+    );
+    console.log("Remove liquidity transaction:", removeLiquidityTx);
+  } catch (error) {
+    console.error("Sanctum operations failed:", error);
+  }
+}
+```
+
+## Implementation Details
+
+- **Sanctum Reserve**: Provides instant liquidity between LSTs and SOL.
+- **Sanctum Router**: Enables direct swaps between different LSTs.
+- **Infinity Pools**: Unified LST liquidity pools with low slippage and high efficiency.
+- **Customized LSTs**: Support for validator-specific LSTs with unique properties and rewards.
+- **APY and TVL data**: Comprehensive data on LST performance and liquidity.
+
+## About Sanctum Finance
+
+Sanctum is a Solana-based protocol designed to act as a unified liquidity layer for Liquid Staking Tokens (LSTs). It addresses the fragmentation and inefficiencies associated with multiple LSTs in the ecosystem by providing:
+
+1. **Deep liquidity** for all LSTs from day one
+2. **Simple swapping** between different LSTs
+3. **Instant liquidity** without waiting for unstaking periods
+4. **Validator-specific LSTs** with custom APYs and features
+5. **Low fees** and minimal slippage for all operations
+
+## Error Handling
+
+```typescript
+try {
+  const signature = await agent.methods.sanctumswapLst(inputLstMint, amount, quotedAmount, priorityFee, outputLstMint);
+} catch (error) {
+  if (error.message.includes("insufficient funds")) {
+    // Handle insufficient balance
+  } else if (error.message.includes("slippage")) {
+    // Handle price movement
+  }
+}
+```
+
+## Best Practices
+
+1. **Priority Fees**
+   - Use appropriate priority fees based on network congestion
+   - Consider higher fees during peak usage times
+   - Monitor transaction confirmation times
+
+2. **Amount Calculation**
+   - Be aware that LSTs typically use 9 decimals (like SOL)
+   - Account for slippage in swap operations
+   - Verify quoted amounts before transactions
+
+3. **LST Selection**
+   - Consider APY differences between LSTs
+   - Research validator-specific LSTs for special features
+   - Monitor TVL for liquidity depth
+
+4. **Error Handling**
+   - Implement retries for failed transactions
+   - Handle slippage errors appropriately
+   - Monitor transaction status until confirmed
+
+## Common LST Addresses
+
+- SOL: `So11111111111111111111111111111111111111112`
+- mSOL: `mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So`
+- jitoSOL: `J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn`
+- bSOL: `bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1`
+- INF: `infnNBxGXvNnkQnGLNsENH4QbPQYmgmG65nPPqRHGLX`
+
+## Response Format
+
+```typescript
+// Successful response for data query
+{
+  status: "success",
+  message: "Data fetched successfully",
+  apys: {
+    "INF": 0.06542961909093714,
+    "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So": 0.08143705823579084,
+    // ...
+  }
+}
+
+// Successful response for transaction
+{
+  status: "success",
+  message: "Transaction executed successfully",
+  transaction: "5UfgJ5vVZxUxefDGqzqkVLHzHxVTyYH9StYyHKgvHYmXJgqJKxEqy9k4Rz9LpXrHF9kUZB7"
+}
+
+// Error response
+{
+  status: "error",
+  message: "Error message here"
+}
+```
+
+## Related Functions
+
+- `getBalance`: Check token balances
+- `trade`: Swap tokens using Jupiter
+- `getTokenData`: Get token information
+- `transfer`: Transfer tokens 

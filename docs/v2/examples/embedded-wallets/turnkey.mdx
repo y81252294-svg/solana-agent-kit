@@ -1,0 +1,190 @@
+---
+title: 'Turnkey Agent Starter'
+description: 'Modern web application with Turnkey wallet integration for Solana Agent Kit'
+icon: 'key-skeleton'
+---
+
+A modern web application built with Next.js and Solana integration, featuring authentication via Turnkey and AI capabilities.
+
+  <div className="flex flex-col items-center">
+    <h3 className="text-xl mb-3">Demo</h3>
+    <a href="https://vimeo.com/1076325238" className="mb-2">
+      <img 
+        src="https://github.com/user-attachments/assets/41211dae-79c8-4b0a-82d4-19cc3ac261b8" 
+        alt="Demo Video Thumbnail" 
+        className="rounded-md shadow-md max-w-full w-[600px]" 
+      />
+    </a>
+  </div>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key">
+    Secure user authentication powered by Turnkey's embedded wallet solution
+  </Card>
+  <Card title="Solana Integration" icon="blockchain">
+    Built with Solana Agent Kit for blockchain interactions and transactions
+  </Card>
+  <Card title="AI Capabilities" icon="robot">
+    OpenAI integration for intelligent features and natural language interactions
+  </Card>
+  <Card title="Modern UI" icon="paintbrush">
+    Built with modern UI components and Tailwind CSS for a sleek user experience
+  </Card>
+  <Card title="Type Safety" icon="shield-check">
+    Full TypeScript support throughout the application codebase
+  </Card>
+</CardGroup>
+
+## Tech Stack
+
+| Category | Technologies |
+|----------|--------------|
+| Framework | Next.js |
+| Authentication | Turnkey |
+| Blockchain | Solana Web3.js, Solana Agent Kit |
+| Styling | Tailwind CSS |
+| AI | OpenAI SDK |
+| Development | TypeScript |
+
+## Installation
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    # Clone the starter template
+    npx gitpick sendaifun/solana-agent-kit/examples/turnkey-agent-starter -b v2
+    cd turnkey-agent-starter
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    pnpm install
+    ```
+  </Step>
+  <Step title="Set up environment variables">
+    Create a `.env.local` file in the root directory with the following variables:
+    
+    ```
+    # Turnkey credentials
+    NEXT_PUBLIC_TURNKEY_API_BASE_URL=
+    NEXT_PUBLIC_TURNKEY_API_PUBLIC_KEY=
+    NEXT_PUBLIC_TURNKEY_ORGANIZATION_ID=
+    NEXT_PUBLIC_TURNKEY_API_PRIVATE_KEY=
+    
+    # Solana configuration
+    NEXT_PUBLIC_RPC_URL=
+    
+    # OpenAI API key
+    OPENAI_API_KEY=
+    ```
+  </Step>
+</Steps>
+
+## Development
+
+Start the development server:
+
+```bash
+pnpm dev
+```
+
+The application will be available at `http://localhost:3000`.
+
+## Project Structure
+
+```
+src/app
+├── components/     # UI components
+├── chat/           # /chat route
+└── utils/          # Utility functions
+```
+
+## Turnkey Integration
+
+This starter uses Turnkey to provide a secure embedded wallet experience. Turnkey offers several advantages for Solana Agent Kit applications:
+
+- **Enhanced Security**: Private keys are stored in secure enclaves
+- **Programmatic Control**: Fine-grained control over wallet operations
+- **Customizable Policies**: Set rules and limits for transactions
+- **Multi-user Support**: Easily manage wallets for multiple users
+
+<Accordion title="Turnkey Integration Example">
+```tsx
+import { TurnkeySigner } from '@turnkey/solana';
+import { SolanaAgentKit, createVercelAITools } from 'solana-agent-kit';
+import TokenPlugin from '@solana-agent-kit/plugin-token';
+import { PublicKey } from '@solana/web3.js';
+
+// Initialize Turnkey signer
+const turnkeySigner = new TurnkeySigner({
+  organizationId: process.env.NEXT_PUBLIC_TURNKEY_ORGANIZATION_ID!,
+  apiKey: {
+    publicKey: process.env.NEXT_PUBLIC_TURNKEY_API_PUBLIC_KEY!,
+    privateKey: process.env.NEXT_PUBLIC_TURNKEY_API_PRIVATE_KEY!,
+  },
+  apiBaseUrl: process.env.NEXT_PUBLIC_TURNKEY_API_BASE_URL!,
+  privateKeyId: user.privateKeyId,
+});
+
+// Initialize Agent Kit with Turnkey
+const agent = new SolanaAgentKit(
+  {
+    publicKey: new PublicKey(user.publicKey),
+    signTransaction: async (tx) => await turnkeySigner.signTransaction(tx),
+    signMessage: async (msg) => await turnkeySigner.signMessage(msg),
+    sendTransaction: async (tx) => {
+      const signedTx = await turnkeySigner.signTransaction(tx);
+      return await connection.sendRawTransaction(signedTx.serialize());
+    },
+  },
+  process.env.NEXT_PUBLIC_RPC_URL!,
+  {}
+).use(TokenPlugin);
+
+// Create AI tools
+const tools = createVercelAITools(agent, agent.actions);
+```
+</Accordion>
+
+## Key Benefits
+
+### Secure Authentication Flow
+
+With Turnkey, this starter provides a secure authentication flow that protects users' private keys. Unlike traditional wallets, private keys are never exposed to the application or the user.
+
+### Fine-grained Transaction Control
+
+The integration allows for fine-grained control over transactions, making it possible to:
+
+- Implement approval workflows
+- Set transaction limits
+- Create custom authorization rules
+- Apply spending controls
+
+### Seamless User Experience
+
+Users can interact with the Solana blockchain through natural language, with the AI assistant handling the technical details. This creates a seamless experience for both blockchain beginners and experienced users.
+
+## AI Integration
+
+The starter leverages the OpenAI API to process natural language requests and convert them into Solana Agent Kit actions. This allows users to:
+
+- Check balances
+- Transfer tokens
+- Swap tokens
+- Get token information
+- And much more...
+
+<Note>
+This is a starter template and may not include all features or optimizations for production use (e.g the use of the OpenAI API key on the client). Please review and modify as necessary for your specific use case.
+</Note>
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.

@@ -1,0 +1,178 @@
+---
+title: 'Introduction'
+description: 'Connect AI agents to Solana protocols with Solana Agent Kit'
+---
+
+# Solana Agent Kit
+
+An open-source toolkit for connecting AI agents to Solana protocols. Now, any agent, using any model can autonomously perform 15+ Solana actions.
+
+
+
+# Quick Start
+
+```bash
+npm install solana-agent-kit
+```
+
+```typescript
+import { SolanaAgentKit, createSolanaTools } from "solana-agent-kit";
+
+// Initialize with private key and optional RPC URL
+const agent = new SolanaAgentKit(
+  "your-wallet-private-key-as-base58",
+  "https://api.mainnet-beta.solana.com",
+  "your-openai-api-key"
+);
+
+// Create LangChain tools
+const tools = createSolanaTools(agent);
+```
+
+# Core Features
+
+## Blockchain Operations
+
+* **Token Operations**
+
+  * Deploy SPL tokens
+
+  * Transfer assets
+
+  * Balance checks
+
+  * Stake SOL
+
+  * ZK compressed airdrops
+
+* **NFT Management**
+
+  * Collection deployment
+
+  * NFT minting
+
+  * Metadata management
+
+  * Royalty configuration
+
+* **DeFi Integration**
+
+  * Jupiter Exchange swaps
+
+  * Launch on Pump
+
+  * Raydium pool creation
+
+  * Orca whirlpool integration
+
+  * Meteora Dynamic AMM
+
+  * Openbook market creation
+
+  * SNS operations
+
+  * Jito Bundles
+
+* **Solana Blinks**
+
+  * Lending operations
+
+  * Arcade Games
+
+  * JupSOL staking
+
+## AI Integration Features
+
+* **LangChain Integration**
+
+  * Ready-to-use LangChain tools
+
+  * Autonomous agent support with React
+
+  * Memory management
+
+  * Streaming responses
+
+* **Autonomous Modes**
+
+  * Interactive chat mode
+
+  * Autonomous mode
+
+  * Configurable intervals
+
+  * Error handling and recovery
+
+* **AI Tools**
+
+  * DALL-E integration for NFTs
+
+  * Natural language processing
+
+  * Price feed integration
+
+  * Automated decision-making
+
+# Example Usage
+
+### Deploy a Token
+
+```typescript
+const result = await agent.deployToken(
+  "my ai token", // name
+  "uri", // uri
+  "token", // symbol
+  9, // decimals
+  1000000 // initial supply
+);
+
+console.log("Token Mint Address:", result.mint.toString());
+```
+
+### Create NFT Collection
+
+```typescript
+const collection = await agent.deployCollection({
+  name: "My NFT Collection",
+  uri: "https://arweave.net/metadata.json",
+  royaltyBasisPoints: 500, // 5%
+  creators: [
+    {
+      address: "creator-wallet-address",
+      percentage: 100,
+    },
+  ],
+});
+```
+
+### Send Compressed Airdrop
+
+```typescript
+import { PublicKey } from "@solana/web3.js";
+
+(async () => {
+  console.log(
+    "~Airdrop cost estimate:",
+    getAirdropCostEstimate(
+      1000, // recipients
+      30_000 // priority fee in lamports
+    )
+  );
+
+  const signature = await agent.sendCompressedAirdrop(
+    new PublicKey("JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"), // mint
+    42, // amount per recipient
+    [
+      new PublicKey("1nc1nerator11111111111111111111111111111111"),
+      // ... add more recipients
+    ],
+    30_000 // priority fee in lamports
+  );
+})();
+```
+
+# Next Steps
+
+Check out our [API Reference](/classes/SolanaAgentKit) for detailed documentation of all available functions and features.
+
+For more examples and detailed usage instructions, visit our [Quickstart Guide](/quickstart).

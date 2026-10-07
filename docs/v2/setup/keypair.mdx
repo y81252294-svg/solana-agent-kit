@@ -1,0 +1,34 @@
+
+Here's how to initialize the agent with a keypair wallet:
+
+```javascript
+import { SolanaAgentKit, createVercelAITools, KeypairWallet } from "solana-agent-kit";
+import TokenPlugin from "@solana-agent-kit/plugin-token";
+import NFTPlugin from "@solana-agent-kit/plugin-nft";
+import DefiPlugin from "@solana-agent-kit/plugin-defi";
+import MiscPlugin from "@solana-agent-kit/plugin-misc";
+import BlinksPlugin from "@solana-agent-kit/plugin-blinks";
+import { Keypair } from "@solana/web3.js";
+import bs58 from "bs58";
+
+// Create a keypair from a private key
+const keyPair = Keypair.fromSecretKey(bs58.decode("YOUR_SECRET_KEY"));
+const wallet = new KeypairWallet(keyPair);
+
+// Initialize with wallet and optional RPC URL
+const agent = new SolanaAgentKit(
+  wallet,
+  "YOUR_RPC_URL",
+  {
+    OPENAI_API_KEY: "YOUR_OPENAI_API_KEY",
+  }
+) 
+  .use(TokenPlugin)
+  .use(NFTPlugin)
+  .use(DefiPlugin)
+  .use(MiscPlugin)
+  .use(BlinksPlugin);
+
+// Create Vercel AI tools (or use createLangchainTools for LangChain)
+const tools = createVercelAITools(agent, agent.actions);
+```

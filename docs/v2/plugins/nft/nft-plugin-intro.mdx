@@ -1,0 +1,68 @@
+---
+title: 'NFT Plugin'
+description: 'Interact with NFTs on the Solana blockchain'
+icon: 'image'
+---
+
+# NFT Plugin
+
+The `@solana-agent-kit/plugin-nft` plugin provides a set of tools and actions to interact with NFTs on the Solana blockchain.
+
+## Installation
+
+Install the plugin alongside the core Solana Agent Kit:
+
+```bash
+npm install solana-agent-kit @solana-agent-kit/plugin-nft
+```
+
+## Integration
+
+Add the NFT plugin to your agent:
+
+```javascript
+import { SolanaAgentKit } from "solana-agent-kit";
+import NFTPlugin from "@solana-agent-kit/plugin-nft";
+
+const agent = new SolanaAgentKit(
+  wallet,
+  "YOUR_RPC_URL",
+  {
+    OPENAI_API_KEY: "YOUR_OPENAI_API_KEY",
+  }
+).use(NFTPlugin);
+```
+
+## Available Tools
+
+### Metaplex
+| Tool Name | Description |
+|-----------|-------------|
+| `deployCollection` | Deploy a new NFT collection |
+| `deployToken` | Deploy a new NFT token |
+| `getAsset` | Retrieve asset details |
+| `getAssetsByAuthority` | Get assets by authority |
+| `getAssetsByCreator` | Get assets by creator |
+| `mintCollectionNFT` | Mint an NFT in a collection |
+| `searchAssets` | Search for assets |
+
+### Magic Eden
+| Tool Name | Description |
+|-----------|-------------|
+| `listMagicEdenNFT` | List an NFT for sale on Magic Eden |
+| `bidOnMagicEdenNFT` | Place a bid on a listed NFT |
+| `getMagicEdenCollectionListings` | Get available NFTs in a collection |
+| `getMagicEdenCollectionStats` | Get collection statistics (floor price, volume, etc.) |
+| `getPopularMagicEdenCollections` | Discover trending NFT collections |
+
+### Tensor
+| Tool Name | Description |
+|-----------|-------------|
+| `listNFTForSale` | List an NFT for sale |
+| `cancelListing` | Cancel an NFT listing |
+
+### 3Land
+| Tool Name | Description |
+|-----------|-------------|
+| `create3LandCollection` | Create a collection on 3Land |
+| `create3LandSingle` | Create a single NFT on 3Land |

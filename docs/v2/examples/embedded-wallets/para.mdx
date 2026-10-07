@@ -1,0 +1,235 @@
+---
+title: 'Para Plugin Example'
+description: 'Integration example of Solana Agent Kit with Para plugins'
+icon: 'plug'
+---
+
+This example demonstrates how to integrate and use Solana Agent Kit v2 with Para plugins in your application.
+
+<div className="flex justify-center my-6">
+  <iframe 
+    width="560" 
+    height="315" 
+    src="https://www.youtube.com/embed/qItH-SnOcr8" 
+    title="Para Plugin Example Demo" 
+    frameBorder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowFullScreen
+    className="rounded-md shadow-lg"
+  ></iframe>
+</div>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Para Plugin Integration" icon="plug-circle-check">
+    Integration of solana-plugin-para for both backend and frontend environments
+  </Card>
+  <Card title="Wallet Management" icon="wallet">
+    Complete example of Para wallet creation, management, and transaction handling
+  </Card>
+  <Card title="Best Practices" icon="book">
+    Real-world usage patterns and implementation best practices
+  </Card>
+  <Card title="Full-stack Implementation" icon="layer-group">
+    Includes both server-side and client-side integration examples
+  </Card>
+</CardGroup>
+
+## Prerequisites
+
+- Node.js 16.x or higher
+- pnpm or bun package manager
+- Solana development environment
+- Para API credentials
+
+## Installation
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone <repository-url>
+    ```
+  </Step>
+  <Step title="Install Para plugin dependencies">
+    First, clone and build the Para plugin:
+    
+    ```bash
+    npx gitpick sendaifun/solana-agent-kit/examples/embedded-wallets/para-plugin-example
+    cd solana-plugin-para
+    pnpm install
+    pnpm build
+    cd ..
+    ```
+    
+    Then install the example project dependencies:
+    
+    ```bash
+    cd <this-repository-folder>/examples/para-plugin-example
+    pnpm install
+    ```
+  </Step>
+  <Step title="Set up environment variables">
+    Copy the example environment file:
+    
+    ```bash
+    cp .env.example .env
+    ```
+    
+    Update the `.env` file with your credentials:
+    
+    ```env
+    LANGCHAIN_CALLBACKS_BACKGROUND=false
+    OPENAI_API_KEY=#optional
+    RPC_URL=
+    SOLANA_PRIVATE_KEY=
+    PARA_API_KEY=
+    PARA_ENV=BETA | PROD
+    GROQ_API_KEY=
+    NEXT_PUBLIC_PARA_ENV=BETA | PROD
+    NEXT_PUBLIC_PARA_API_KEY=
+    ```
+  </Step>
+</Steps>
+
+## Running the Example
+
+Start the development server:
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+## Implementation Details
+
+### Server-Side Integration
+
+Para can be integrated on the server side by using the Para Server Plugin:
+
+```typescript
+import { SolanaAgentKit } from "solana-agent-kit";
+import ParaServerPlugin from "@getpara/plugin-para-server";
+
+// Initialize Solana Agent Kit with your configuration
+const solanaAgent = new SolanaAgentKit(
+  wallet,
+  process.env.RPC_URL,
+  {
+    // Optional configuration options
+  }
+);
+
+// Extend the agent with Para Server Plugin
+export const solanaAgentWithPara = solanaAgent.use(ParaServerPlugin);
+```
+
+### Web Integration
+
+For client-side integration, use the Para Web Plugin:
+
+```typescript
+import ParaWebPlugin from "@getpara/plugin-para-web";
+import { solanaAgent } from "./solana";
+
+// Extend the agent with Para Web Plugin
+export const solanaAgentWithPara = solanaAgent.use(ParaWebPlugin);
+
+// Access the Para instance directly
+export const para = solanaAgentWithPara.methods.getParaInstance();
+```
+
+## Para Plugin Features
+
+The Para plugin adds the following capabilities to your Solana Agent:
+
+<AccordionGroup>
+  <Accordion title="Wallet Creation">
+    Create embedded wallets for your users without requiring them to manage private keys or install extensions.
+    
+    ```typescript
+    // Create a new wallet
+    const wallet = await para.createWallet({
+      name: "User Wallet",
+      email: "user@example.com"
+    });
+    ```
+  </Accordion>
+  
+  <Accordion title="Transaction Signing">
+    Sign transactions securely through Para's infrastructure:
+    
+    ```typescript
+    // Sign a transaction
+    const signedTx = await para.signTransaction(transaction);
+    
+    // Sign and send a transaction
+    const signature = await para.signAndSendTransaction(transaction);
+    ```
+  </Accordion>
+  
+  <Accordion title="Key Management">
+    Para handles all key management securely, allowing you to focus on building your application logic.
+    
+    ```typescript
+    // Retrieve wallet information
+    const walletInfo = await para.getWallet(walletId);
+    
+    // Update wallet settings
+    await para.updateWallet(walletId, {
+      name: "Updated Wallet Name"
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Project Structure
+
+```
+app/
+├── api/            # API routes for Para operations
+│   └── agent/      # Agent endpoints for Para integration
+├── components/     # React components
+│   ├── ui/         # UI components
+│   └── wallet/     # Wallet-specific components
+├── utils/          # Utility functions
+│   ├── para.ts     # Para configuration
+│   └── solana.ts   # Solana agent setup
+└── pages/          # Application pages
+```
+
+## Integration Benefits
+
+Using Para with Solana Agent Kit provides several advantages:
+
+1. **User-friendly onboarding** - Create wallets for users without requiring technical knowledge
+2. **Enhanced security** - Para's secure infrastructure manages keys and signing
+3. **Developer simplicity** - Abstract away complex wallet management
+4. **Flexible deployment** - Works in both server and client environments
+5. **Seamless AI integration** - Para works naturally with the Agent Kit's AI capabilities
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Para Documentation" icon="book" href="https://docs.getpara.com/integration-guides/solana">
+    Official Para integration guides and API documentation
+  </Card>
+  <Card title="Solana Agent Kit" icon="toolbox" href="https://github.com/sendaifun/solana-agent-kit/tree/v2">
+    Solana Agent Kit v2 documentation and examples
+  </Card>
+  <Card title="Para Website" icon="globe" href="https://getpara.com/">
+    Learn more about Para and its features
+  </Card>
+  <Card title="GitHub Repository" icon="github" href="#">
+    Access the example source code on GitHub
+  </Card>
+</CardGroup>
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.

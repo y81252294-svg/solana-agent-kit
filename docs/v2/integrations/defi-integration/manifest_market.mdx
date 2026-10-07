@@ -1,0 +1,287 @@
+---
+title: 'Manifest Trading Integration'
+description: 'Learn how to use Manifest protocol for market making and trading'
+---
+
+Solana Agent Kit provides comprehensive integration with Manifest protocol for creating markets, placing orders, and managing trades. The integration supports various order types, batch orders, and market management functions.
+
+## Key Features
+
+- Market creation
+- Limit order placement
+- Batch order execution
+- Pattern-based order generation
+- Order cancellation
+- Fund withdrawal
+- LangChain tool integration
+
+## Basic Usage
+
+### Creating a New Market
+
+```typescript
+import { PublicKey } from "@solana/web3.js";
+
+const [signature, marketId] = await agent.methods.manifestCreateMarket(
+  new PublicKey("So11111111111111111111111111111111111111112"), // SOL
+  new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")  // USDC
+);
+```
+
+### Placing a Limit Order
+
+```typescript
+const signature = await agent.methods.limitOrder(
+  new PublicKey(marketId),
+  1.5,         // quantity
+  "Buy",       // side
+  25.5        // price
+);
+```
+
+### Placing Batch Orders
+
+```typescript
+const orders = [
+  { quantity: 1, side: "Buy", price: 24.5 },
+  { quantity: 0.5, side: "Sell", price: 26.5 }
+];
+
+const signature = await agent.methods.batchOrder(
+  new PublicKey(marketId),
+  orders
+);
+```
+
+### Cancelling All Orders
+
+```typescript
+const signature = await agent.methods.cancelAllOrders(
+  new PublicKey(marketId)
+);
+```
+
+### Withdrawing Funds
+
+```typescript
+const signature = await agent.methods.withdrawAll(
+  new PublicKey(marketId)
+);
+```
+
+## Batch Order Patterns
+
+The integration supports generating orders using patterns:
+
+```typescript
+interface BatchOrderPattern {
+  side: "Buy" | "Sell";
+  totalQuantity?: number;
+  individualQuantity?: number;
+  numberOfOrders?: number;
+  priceRange?: {
+    min?: number;
+    max?: number;
+  };
+  spacing?: {
+    type: "fixed" | "percentage";
+    value: number;
+  };
+}
+```
+
+### Pattern Examples
+
+1. Percentage-based Spacing:
+```typescript
+const pattern = {
+  side: "Buy",
+  totalQuantity: 100,
+  priceRange: { max: 1.0 },
+  spacing: { type: "percentage", value: 1 },
+  numberOfOrders: 5
+};
+```
+
+2. Fixed-price Spacing:
+```typescript
+const pattern = {
+  side: "Sell",
+  individualQuantity: 10,
+  priceRange: { min: 50, max: 55 },
+  spacing: { type: "fixed", value: 1 },
+  numberOfOrders: 3
+};
+```
+
+## LangChain Integration
+
+Solana Agent Kit provides several LangChain tools for Manifest trading:
+
+### Create Market Tool
+
+```typescript
+import { SolanaManifestCreateMarket } from 'solana-agent-kit';
+
+const createMarketTool = new SolanaManifestCreateMarket(agent);
+
+// Tool input format (JSON string):
+const input = JSON.stringify({
+  baseMint: "So11111111111111111111111111111111111111112",
+  quoteMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+});
+```
+
+### Limit Order Tool
+
+```typescript
+import { SolanaLimitOrderTool } from 'solana-agent-kit';
+
+const limitOrderTool = new SolanaLimitOrderTool(agent);
+
+// Tool input format (JSON string):
+const input = JSON.stringify({
+  marketId: "ENhU8LsaR7vDD2G1CsWcsuSGNrih9Cv5WZEk7q9kPapQ",
+  quantity: 1.5,
+  side: "Buy",
+  price: 25.5
+});
+```
+
+### Batch Order Tool
+
+```typescript
+import { SolanaBatchOrderTool } from 'solana-agent-kit';
+
+const batchOrderTool = new SolanaBatchOrderTool(agent);
+
+// Tool input format for list-based orders (JSON string):
+const listInput = JSON.stringify({
+  marketId: "ENhU8LsaR7vDD2G1CsWcsuSGNrih9Cv5WZEk7q9kPapQ",
+  orders: [
+    { quantity: 1, side: "Buy", price: 24.5 },
+    { quantity: 0.5, side: "Sell", price: 26.5 }
+  ]
+});
+
+// Tool input format for pattern-based orders (JSON string):
+const patternInput = JSON.stringify({
+  marketId: "ENhU8LsaR7vDD2G1CsWcsuSGNrih9Cv5WZEk7q9kPapQ",
+  pattern: {
+    side: "Buy",
+    totalQuantity: 100,
+    priceRange: { max: 1.0 },
+    spacing: { type: "percentage", value: 1 },
+    numberOfOrders: 5
+  }
+});
+```
+
+## Example Prompts
+
+For LangChain AI tools, here are example prompts:
+
+### Market Creation
+```text
+"Create a new SOL/USDC market"
+"Setup a trading market for BONK/USDC"
+```
+
+### Order Placement
+```text
+"Place a limit buy order for 1.5 SOL at $25.5"
+"Create 5 buy orders totaling 100 tokens, 1% apart below $1"
+"Place sell orders of 10 tokens each between $50-$55"
+```
+
+### Market Management
+```text
+"Cancel all my orders in the SOL/USDC market"
+"Withdraw all funds from the BONK/USDC market"
+```
+
+## Important Notes
+
+1. **Order Validation**
+   - Sell orders must be priced above buy orders
+   - All orders must include quantity, side, and price
+   - Batch orders are validated before execution
+
+2. **Pattern Generation**
+   - Supports both fixed and percentage-based spacing
+   - Can specify total or individual quantities
+   - Random order count if not specified (max 8)
+
+3. **Transaction Handling**
+   - Each order operation returns a transaction signature
+   - Uses versioned transactions for compatibility
+   - Includes automatic error handling
+
+## Best Practices
+
+1. **Market Creation**
+   ```typescript
+   // Always specify both base and quote tokens
+   const [signature, marketId] = await agent.methods.manifestCreateMarket(
+     baseMint,
+     quoteMint
+   );
+   ```
+
+2. **Batch Orders**
+   ```typescript
+   // Use batch orders instead of multiple single orders
+   const orders = generateOrdersfromPattern({
+     side: "Buy",
+     totalQuantity: 100,
+     priceRange: { min: 24, max: 25 },
+     numberOfOrders: 5
+   });
+   ```
+
+3. **Order Management**
+   ```typescript
+   // Cancel orders before withdrawing
+   await agent.methods.cancelAllOrders(marketId);
+   await agent.methods.withdrawAll(marketId);
+   ```
+
+## Error Handling
+
+```typescript
+try {
+  const signature = await agent.methods.batchOrder(marketId, orders);
+} catch (error) {
+  if (error.message.includes("crossed")) {
+    // Handle invalid order prices
+  } else if (error.message.includes("insufficient")) {
+    // Handle insufficient funds
+  }
+}
+```
+
+## Technical Details
+
+### Constants
+```typescript
+const MANIFEST_PROGRAM_ID = "MNFSTqtC93rEfYHB6hF82sKdZpUDFWkViLByLd1k1Ms";
+const FIXED_MANIFEST_HEADER_SIZE = 256;
+```
+
+### Order Types
+```typescript
+interface OrderParams {
+  quantity: number;
+  side: "Buy" | "Sell";
+  price: number;
+}
+```
+
+### Transaction Configuration
+```typescript
+const TX_OPTIONS = {
+  skipPreflight: false,
+  preflightCommitment: "confirmed",
+  maxRetries: 3
+};
+```

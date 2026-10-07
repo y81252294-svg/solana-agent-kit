@@ -1,0 +1,246 @@
+---
+title: 'Privy Server wallet NextJS Starter'
+description: 'Modern Next.js 15 starter with Privy authentication and Solana Agent Kit'
+icon: 'rocket'
+---
+
+A modern, full-stack web application starter kit that integrates Privy Server wallet authentication with Solana Agent Kit for building secure and scalable web3 applications.
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Privy Authentication" icon="lock">
+    Server-side authentication using `@privy-io/server-auth` for secure user management
+  </Card>
+  <Card title="Solana Integration" icon="link-simple">
+    Built-in Solana wallet and token management using `solana-agent-kit`
+  </Card>
+  <Card title="Next.js 15" icon="rocket">
+    Built on the latest Next.js framework with App Router for optimal performance
+  </Card>
+  <Card title="Database Integration" icon="database">
+    Uses Drizzle ORM with PostgreSQL for type-safe database operations
+  </Card>
+  <Card title="Modern UI" icon="palette">
+    Styled with Tailwind CSS and Radix UI components for a polished look
+  </Card>
+  <Card title="Rich Text Editing" icon="pen-nib">
+    Includes CodeMirror and ProseMirror integration for enhanced editing
+  </Card>
+  <Card title="Type Safety" icon="shield-check">
+    Full TypeScript support throughout the entire codebase
+  </Card>
+  <Card title="Testing" icon="vial">
+    Configured with Playwright for comprehensive end-to-end testing
+  </Card>
+</CardGroup>
+
+## Prerequisites
+
+- Node.js 18+ 
+- pnpm 9.12.3+
+- PostgreSQL database
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a new project using gitpick">
+    ```bash
+    npx gitpick sendaifun/solana-agent-kit/examples/misc/privy-server-wallet-agent -b v2
+    cd privy-server-wallet-agent
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    pnpm install
+    ```
+  </Step>
+  <Step title="Set up environment variables">
+    Create a `.env` file with the following variables:
+    
+    ```env
+    # Database
+    DATABASE_URL=your_postgres_connection_string
+    
+    # Privy
+    PRIVY_APP_ID=your_privy_app_id
+    PRIVY_APP_SECRET=your_privy_app_secret
+    
+    # Solana
+    NEXT_PUBLIC_RPC_URL=your_solana_rpc_url
+    
+    # Optional: OpenAI for AI features
+    OPENAI_API_KEY=your_openai_api_key
+    ```
+  </Step>
+  <Step title="Initialize the database">
+    ```bash
+    pnpm db:generate
+    pnpm db:migrate
+    ```
+  </Step>
+  <Step title="Start the development server">
+    ```bash
+    pnpm dev
+    ```
+    
+    Your application will be available at http://localhost:3000
+  </Step>
+</Steps>
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development server |
+| `pnpm build` | Build for production |
+| `pnpm start` | Start production server |
+| `pnpm lint` | Run linting |
+| `pnpm format` | Format code |
+| `pnpm test` | Run Playwright tests |
+
+### Database Commands
+
+| Command | Description |
+|---------|-------------|
+| `pnpm db:generate` | Generate database schemas |
+| `pnpm db:migrate` | Run database migrations |
+| `pnpm db:studio` | Open Drizzle Studio |
+| `pnpm db:push` | Push schema changes |
+| `pnpm db:check` | Check schema changes |
+
+## Project Structure
+
+```
+├── app/           # Next.js app directory
+│   ├── api/       # API routes
+│   ├── (auth)/    # Authentication routes
+│   └── dashboard/ # User dashboard
+├── components/    # React components
+│   ├── ui/        # UI components
+│   ├── forms/     # Form components
+│   └── wallet/    # Wallet components
+├── lib/           # Utility functions and libraries
+│   ├── db/        # Database configuration
+│   ├── auth/      # Auth utilities
+│   └── solana/    # Solana utilities
+├── hooks/         # Custom React hooks
+├── public/        # Static assets
+├── tests/         # Playwright tests
+└── artifacts/     # Build artifacts
+```
+
+## Key Integrations
+
+### Privy Authentication
+
+This starter uses Privy for authentication, providing:
+
+- Social login (Google, Twitter, etc.)
+- Email and phone authentication
+- Wallet-based authentication
+- Server-side session management
+
+<Accordion title="Authentication Code Example">
+```tsx
+// app/providers.tsx
+import { PrivyProvider } from '@privy-io/react-auth';
+import { PrivyWagmiConnector } from '@privy-io/wagmi-connector';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <PrivyProvider
+      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
+      config={{
+        loginMethods: ['email', 'wallet'],
+        appearance: {
+          theme: 'light',
+          accentColor: '#676FFF',
+        },
+        embeddedWallets: {
+          createOnLogin: 'users-without-wallets',
+        },
+      }}
+    >
+      <PrivyWagmiConnector>
+        {children}
+      </PrivyWagmiConnector>
+    </PrivyProvider>
+  );
+}
+```
+</Accordion>
+
+### Solana Agent Kit Integration
+
+The starter comes with Solana Agent Kit pre-configured, allowing users to:
+
+- View token balances
+- Send and receive tokens
+- Interact with Solana programs
+- Use AI-powered blockchain interactions
+
+<Accordion title="Solana Integration Example">
+```tsx
+// lib/solana/agent.ts
+import { SolanaAgentKit, createVercelAITools } from 'solana-agent-kit';
+import TokenPlugin from '@solana-agent-kit/plugin-token';
+import { PublicKey } from '@solana/web3.js';
+
+export function createSolanaAgent(wallet: any) {
+  const agent = new SolanaAgentKit(
+    {
+      publicKey: new PublicKey(wallet.publicKey),
+      signTransaction: wallet.signTransaction,
+      signMessage: wallet.signMessage,
+      sendTransaction: wallet.sendTransaction,
+    },
+    process.env.NEXT_PUBLIC_RPC_URL!,
+    {}
+  ).use(TokenPlugin);
+
+  const tools = createVercelAITools(agent, agent.actions);
+  
+  return { agent, tools };
+}
+```
+</Accordion>
+
+## Database Setup
+
+This starter uses Drizzle ORM with PostgreSQL. The schema is defined in `lib/db/schema.ts`:
+
+<Accordion title="Database Schema Example">
+```tsx
+// lib/db/schema.ts
+import { pgTable, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  privyUserId: text('privy_user_id').notNull().unique(),
+  walletAddress: text('wallet_address'),
+  email: text('email'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const transactions = pgTable('transactions', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: serial('user_id').references(() => users.id),
+  signature: text('signature').notNull(),
+  amount: text('amount').notNull(),
+  tokenAddress: text('token_address'),
+  recipient: text('recipient').notNull(),
+  status: text('status').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+```
+</Accordion>
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the terms of the license included in the [LICENSE](LICENSE) file.

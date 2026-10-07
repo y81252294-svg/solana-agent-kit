@@ -1,0 +1,110 @@
+
+## React Native Integration
+
+For React Native applications, you can integrate Solana Agent Kit with wallet adapters that work in a mobile environment. Here's a simplified example using a custom wallet hook:
+
+```javascript
+import { useCallback, useMemo, useState } from "react";
+import { generateText, type Message } from "ai";
+import { SolanaAgentKit, createVercelAITools } from "solana-agent-kit";
+import TokenPlugin from "@solana-agent-kit/plugin-token";
+import { Connection, PublicKey } from "@solana/web3.js";
+import { useWallet } from "@/walletProviders"; // Your wallet provider hook
+
+export function useChat({ id, initialMessages = [] }) {
+  const [messages, setMessages] = useState(initialMessages);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
+  // Get wallet functionality from your custom wallet hook
+  const { connected, address, signTransaction, signMessage, sendTransaction } = useWallet();
+
+  // Initialize Solana tools with the connected wallet
+  const solanaTools = useMemo(() => {
+    if (connected && address) {
+      const agent = new SolanaAgentKit(
+        {
+          publicKey: new PublicKey(address),
+          signTransaction: async (tx) => await signTransaction(tx),
+          signMessage: async (msg) => await signMessage(msg),
+          sendTransaction: async (tx) => {
+            const connection = new Connection("YOUR_RPC_URL", "confirmed");
+            return await sendTransaction(tx, connection);
+          },
+          signAndSendTransaction: async (tx) => {
+            const connection = new Connection("YOUR_RPC_URL", "confirmed");
+            const signature = await sendTransaction(tx, connection);
+            return { signature };
+          },
+        },
+        "YOUR_RPC_URL",
+        {}
+      ).use(TokenPlugin);
+      
+      return createVercelAITools(agent, agent.actions);
+    }
+  }, [connected, address, signTransaction, signMessage, sendTransaction]);
+
+  // Send a message to the AI assistant
+  const sendMessage = useCallback(async (newMessage) => {
+    if (!connected) {
+      setError("You must be connected to your wallet to send messages");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    
+    // Update UI with user message
+    setMessages((prev) => [...prev, newMessage]);
+
+    try {
+      // Generate AI response
+      const res = await generateText({
+        model: myProvider.languageModel("chat-model"),
+        system: `You're a helpful Solana assistant that helps people carry out transactions. Connected wallet: ${address}`,
+        messages: [...messages, newMessage],
+        tools: solanaTools,
+      });
+
+      // Process and display assistant response
+      const assistantMessage = res.response.messages.find(m => m.role === "assistant");
+      if (assistantMessage) {
+        setMessages((prev) => [...prev, {
+          id: assistantMessage.id,
+          content: assistantMessage.content,
+          role: "assistant",
+          parts: assistantMessage.parts,
+        }]);
+      }
+    } catch (err) {
+      setError(err.message || "An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [messages, solanaTools, connected, address]);
+
+  return {
+    messages,
+    isLoading,
+    error,
+    sendMessage,
+  };
+}
+```
+
+## Using with Vercel AI SDK
+
+Once you've set up your agent and tools, you can use them with the Vercel AI SDK:
+
+```javascript
+import { generateText } from "ai";
+
+// Generate a response with your AI provider
+const res = await generateText({
+  model: myProvider.languageModel("your-model"),
+  system: "You're a helpful Solana assistant that helps people carry out transactions on the Solana blockchain.",
+  messages: messages, // Your chat messages
+  tools: solanaTools, // The tools created above
+});
+```

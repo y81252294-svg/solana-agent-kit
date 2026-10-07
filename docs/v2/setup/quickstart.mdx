@@ -1,0 +1,217 @@
+# Quick Start Guide
+
+This guide will help you set up Solana Agent Kit v2 in your application, including installation, initialization, and embedded wallet integration.
+
+## Core Installation
+
+First, install the core Solana Agent Kit package:
+
+```bash
+npm install solana-agent-kit
+```
+
+## Install Plugins
+
+You can choose to install specific plugins based on your needs or install all available plugins:
+
+```bash
+npm install @solana-agent-kit/plugin-token @solana-agent-kit/plugin-nft @solana-agent-kit/plugin-defi @solana-agent-kit/plugin-misc @solana-agent-kit/plugin-blinks
+```
+
+## Plugin Navigation
+
+<CardGroup cols={2}>
+  <Card title="Token Plugin" icon="coins" href="/docs/v2/plugins/token/token-plugin-intro">
+    Transfer tokens, check balances, and deploy tokens with the Token Plugin.
+  </Card>
+  <Card title="NFT Plugin" icon="image" href="/docs/v2/plugins/nft/nft-plugin-intro">
+    Create collections, mint NFTs, and manage digital assets with the NFT Plugin.
+  </Card>
+  <Card title="DeFi Plugin" icon="chart-line" href="/docs/v2/plugins/defi/defi-plugin-intro">
+    Swap tokens, provide liquidity, and interact with DeFi protocols using the DeFi Plugin.
+  </Card>
+  <Card title="Blinks Plugin" icon="bolt" href="/docs/v2/plugins/blinks/blinks-plugin-intro">
+    Execute fast and atomic transactions with the Blinks Plugin.
+  </Card>
+</CardGroup>
+
+## Basic Initialization
+
+Here's how to initialize the agent with a keypair wallet:
+
+```javascript
+import { SolanaAgentKit, createVercelAITools, KeypairWallet } from "solana-agent-kit";
+import TokenPlugin from "@solana-agent-kit/plugin-token";
+import NFTPlugin from "@solana-agent-kit/plugin-nft";
+import DefiPlugin from "@solana-agent-kit/plugin-defi";
+import MiscPlugin from "@solana-agent-kit/plugin-misc";
+import BlinksPlugin from "@solana-agent-kit/plugin-blinks";
+import { Keypair } from "@solana/web3.js";
+import bs58 from "bs58";
+
+// Create a keypair from a private key
+const keyPair = Keypair.fromSecretKey(bs58.decode("YOUR_SECRET_KEY"));
+const wallet = new KeypairWallet(keyPair);
+
+// Initialize with wallet and optional RPC URL
+const agent = new SolanaAgentKit(
+  wallet,
+  "YOUR_RPC_URL",
+  {
+    OPENAI_API_KEY: "YOUR_OPENAI_API_KEY",
+  }
+) 
+  .use(TokenPlugin)
+  .use(NFTPlugin)
+  .use(DefiPlugin)
+  .use(MiscPlugin)
+  .use(BlinksPlugin);
+
+// Create Vercel AI tools (or use createLangchainTools for LangChain)
+const tools = createVercelAITools(agent, agent.actions);
+```
+
+## Embedded Wallet Integration
+
+For a better user experience, you can integrate with embedded wallets like Privy instead of directly handling private keys. Here's how to use Solana Agent Kit with the Solana wallet adapter:
+
+```javascript
+import { SolanaAgentKit, createVercelAITools } from "solana-agent-kit";
+import TokenPlugin from "@solana-agent-kit/plugin-token";
+import DefiPlugin from "@solana-agent-kit/plugin-defi";
+import BlinksPlugin from "@solana-agent-kit/plugin-blinks";
+import MiscPlugin from "@solana-agent-kit/plugin-misc";
+import { Connection, PublicKey } from "@solana/web3.js";
+
+// Assuming you have a wallet from Privy or another wallet adapter
+const wallet = wallets[0]; // From useSolanaWallets() or similar
+
+// Create an agent with the wallet adapter
+const agent = new SolanaAgentKit(
+  {
+    publicKey: new PublicKey(wallet.address),
+    signTransaction: async (tx) => {
+      const signed = await wallet.signTransaction(tx);
+      return signed;
+    },
+    signMessage: async (msg) => {
+      const signed = await wallet.signMessage(msg);
+      return signed;
+    },
+    sendTransaction: async (tx) => {
+      const connection = new Connection(
+        "YOUR_RPC_URL",
+        "confirmed"
+      );
+      return await wallet.sendTransaction(tx, connection);
+    },
+    signAllTransactions: async (txs) => {
+      const signed = await wallet.signAllTransactions(txs);
+      return signed;
+    },
+    signAndSendTransaction: async (tx) => {
+      const signed = await wallet.signTransaction(tx);
+      const connection = new Connection(
+        "YOUR_RPC_URL",
+        "confirmed"
+      );
+      const sig = await wallet.sendTransaction(signed, connection);
+      return { signature: sig };
+    },
+  },
+  "YOUR_RPC_URL",
+  {}
+)
+  .use(TokenPlugin)
+  .use(DefiPlugin)
+  .use(BlinksPlugin)
+  .use(MiscPlugin);
+
+// Create tools for your AI model
+const tools = createVercelAITools(agent, agent.actions);
+```
+
+## MCP Adapter Integration
+
+The Model Context Protocol (MCP) adapter allows you to create an MCP server that Claude Desktop can use to interact with the Solana blockchain. This provides a standardized way for Claude to access Solana functionality.
+
+### Installation
+
+```bash
+npm install solana-agent-kit @solana-agent-kit/plugin-token @solana-agent-kit/adapter-mcp dotenv
+```
+
+### Basic Setup
+
+Create an `index.js` file with the following code:
+
+```javascript
+import { SolanaAgentKit, KeypairWallet } from "solana-agent-kit";
+import { startMcpServer } from '@solana-agent-kit/adapter-mcp';
+import TokenPlugin from '@solana-agent-kit/plugin-token';
+import * as dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
+
+// Initialize wallet with private key from environment
+const wallet = new KeypairWallet(process.env.SOLANA_PRIVATE_KEY);
+
+// Create agent with plugin
+const agent = new SolanaAgentKit(
+  wallet,
+  process.env.RPC_URL,
+  {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  },
+).use(TokenPlugin);
+
+// Select which actions to expose to the MCP server
+const finalActions = {
+  BALANCE_ACTION: agent.actions.find((action) => action.name === "BALANCE_ACTION")!,
+  TOKEN_BALANCE_ACTION: agent.actions.find((action) => action.name === "TOKEN_BALANCE_ACTION")!,
+  GET_WALLET_ADDRESS_ACTION: agent.actions.find((action) => action.name === "GET_WALLET_ADDRESS_ACTION")!,
+};
+
+// Start the MCP server
+startMcpServer(finalActions, agent, { name: "solana-agent", version: "0.0.1" });
+```
+
+### Claude Desktop Configuration
+
+Configure Claude Desktop to use your MCP server:
+
+1. Edit the Claude Desktop configuration file:
+
+   **MacOS:**
+   ```bash
+   code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+   ```
+
+   **Windows:**
+   ```bash
+   code $env:AppData\Claude\claude_desktop_config.json
+   ```
+
+2. Add your MCP server configuration:
+
+   ```json
+   {
+       "mcpServers": {
+           "agent-kit": {
+               "command": "node",
+               "env": {
+                   "RPC_URL": "your_solana_rpc_url_here",
+                   "SOLANA_PRIVATE_KEY": "your_private_key_here"
+               },
+               "args": [
+                   "/ABSOLUTE/PATH/TO/YOUR/MCP/PROJECT/FILE"
+               ]
+           }
+       }
+   }
+   ```
+
+3. Restart Claude Desktop after updating the configuration.
+
+This integration allows Claude to interact directly with your Solana agent through the MCP protocol, providing seamless blockchain functionality within conversations.

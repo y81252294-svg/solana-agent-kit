@@ -1,0 +1,302 @@
+---
+title: 'Phantom Agent Starter'
+description: 'Modern Chat Agent with Phantom wallet integration for Solana Agent Kit'
+icon: 'ghost'
+---
+
+<div className="flex flex-col items-center justify-center mb-8">
+  <div className="flex flex-col items-center">
+    <h3 className="text-xl mb-3">Demo</h3>
+    <a href="https://vimeo.com/1076513294/c65630a9b1" className="mb-2">
+      <img 
+        src="https://github.com/user-attachments/assets/ade7f009-ec5c-47f3-978a-09af1417bc35" 
+        alt="Demo Video Thumbnail" 
+        className="rounded-md shadow-md max-w-full w-[600px]" 
+      />
+    </a>
+  </div>
+</div>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Phantom Authentication" icon="wallet">
+    Secure user authentication powered by Phantom wallet
+  </Card>
+  <Card title="Solana Integration" icon="blockchain">
+    Built with Solana Agent Kit for blockchain interactions and transactions
+  </Card>
+  <Card title="AI Capabilities" icon="robot">
+    OpenAI integration for intelligent features and natural language interactions
+  </Card>
+  <Card title="Modern UI" icon="paintbrush">
+    Built with modern UI components and Tailwind CSS for a sleek user experience
+  </Card>
+  <Card title="Type Safety" icon="shield-check">
+    Full TypeScript support throughout the application codebase
+  </Card>
+</CardGroup>
+
+## Tech Stack
+
+| Category | Technologies |
+|----------|--------------|
+| Framework | Next.js |
+| Authentication | Phantom |
+| Blockchain | Solana Web3.js, Solana Agent Kit |
+| Styling | Tailwind CSS |
+| AI | OpenAI SDK |
+| Development | TypeScript |
+
+## Installation
+
+<Steps>
+  <Step title="Create a new project using gitpick">
+    ```bash
+    npx gitpick sendaifun/solana-agent-kit/examples/phantom-agent-starter -b v2
+    cd phantom-agent-starter
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    pnpm install
+    ```
+  </Step>
+  <Step title="Set up environment variables">
+    Create a `.env.local` file in the root directory with the following variables:
+    
+    ```env
+    # Solana configuration
+    NEXT_PUBLIC_RPC_URL=your_solana_rpc_url
+    
+    # OpenAI API key
+    OPENAI_API_KEY=your_openai_api_key
+    ```
+  </Step>
+</Steps>
+
+## Development
+
+Start the development server:
+
+```bash
+pnpm dev
+```
+
+The application will be available at `http://localhost:3000`.
+
+## Project Structure
+
+```
+src/app
+├── components/     # UI components
+├── chat/           # /chat route
+└── utils/          # Utility functions
+```
+
+## Phantom Integration
+
+This starter uses Phantom wallet to provide a seamless authentication experience. Phantom is one of the most popular wallets in the Solana ecosystem and offers several advantages:
+
+- **Wide Adoption**: Millions of users already have Phantom installed
+- **Simple Connection**: Connect with just a few clicks
+- **Built-in Security**: Hardware wallet support and security features
+- **Mobile Support**: Works across desktop and mobile
+
+<Accordion title="Phantom Integration Example">
+```tsx
+// app/components/WalletConnectButton.tsx
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { useEffect, useState } from 'react';
+
+export function WalletConnectButton() {
+  const { connected, publicKey } = useWallet();
+  const [address, setAddress] = useState<string | null>(null);
+  
+  useEffect(() => {
+    if (publicKey) {
+      setAddress(publicKey.toString());
+    } else {
+      setAddress(null);
+    }
+  }, [publicKey]);
+  
+  return (
+    <div className="flex items-center gap-4">
+      <WalletMultiButton className="phantom-button" />
+      {connected && address && (
+        <div className="text-sm opacity-75">
+          Connected: {address.slice(0, 4)}...{address.slice(-4)}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+</Accordion>
+
+<Accordion title="Solana Agent Kit Integration">
+```tsx
+// app/utils/agent.ts
+import { SolanaAgentKit, createVercelAITools } from 'solana-agent-kit';
+import TokenPlugin from '@solana-agent-kit/plugin-token';
+import { Connection, PublicKey } from '@solana/web3.js';
+
+export function createSolanaAgent(wallet: any) {
+  if (!wallet || !wallet.publicKey) {
+    return null;
+  }
+  
+  // Create Solana Agent Kit instance
+  const agent = new SolanaAgentKit(
+    {
+      publicKey: wallet.publicKey,
+      signTransaction: async (tx) => {
+        return await wallet.signTransaction(tx);
+      },
+      signMessage: async (msg) => {
+        const encodedMessage = new TextEncoder().encode(msg);
+        const signedMessage = await wallet.signMessage(encodedMessage);
+        return signedMessage;
+      },
+      sendTransaction: async (tx) => {
+        const connection = new Connection(
+          process.env.NEXT_PUBLIC_RPC_URL!,
+          'confirmed'
+        );
+        return await wallet.sendTransaction(tx, connection);
+      },
+    },
+    process.env.NEXT_PUBLIC_RPC_URL!,
+    {}
+  ).use(TokenPlugin);
+  
+  // Create AI tools
+  const tools = createVercelAITools(agent, agent.actions);
+  
+  return { agent, tools };
+}
+```
+</Accordion>
+
+## Wallet Adapter Setup
+
+This starter utilizes the Solana Wallet Adapter library to connect with Phantom. The setup includes configuration for the wallet adapter provider:
+
+<Accordion title="Wallet Adapter Configuration">
+```tsx
+// app/providers.tsx
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
+import { WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { clusterApiUrl } from '@solana/web3.js';
+import { useMemo } from 'react';
+
+// Import the wallet adapter CSS
+import '@solana/wallet-adapter-react-ui/styles.css';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  // Set up network and endpoint
+  const network = WalletAdapterNetwork.Mainnet;
+  const endpoint = useMemo(() => 
+    process.env.NEXT_PUBLIC_RPC_URL || clusterApiUrl(network), 
+    [network]
+  );
+  
+  // Set up wallets
+  const wallets = useMemo(() => [
+    new PhantomWalletAdapter(),
+  ], []);
+  
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          {children}
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  );
+}
+```
+</Accordion>
+
+## Chat Implementation
+
+The starter includes a chat interface that allows users to interact with the Solana blockchain through natural language:
+
+<Accordion title="Chat Component">
+```tsx
+// app/chat/page.tsx
+import { Chat } from '@/components/Chat';
+import { WalletConnectButton } from '@/components/WalletConnectButton';
+
+export default function ChatPage() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-bold">Solana AI Assistant</h1>
+        <WalletConnectButton />
+      </div>
+      
+      <div className="border rounded-lg shadow-sm overflow-hidden">
+        <Chat />
+      </div>
+    </div>
+  );
+}
+```
+</Accordion>
+
+## AI Integration
+
+The starter uses the OpenAI API to process natural language requests and execute Solana transactions:
+
+<Accordion title="AI Integration">
+```tsx
+// app/utils/ai.ts
+import { generateText } from 'ai';
+import { createSolanaAgent } from './agent';
+
+export async function processUserMessage(message, wallet) {
+  if (!wallet || !wallet.publicKey) {
+    return {
+      role: 'assistant',
+      content: 'Please connect your Phantom wallet first.',
+    };
+  }
+  
+  // Create Solana agent and tools
+  const { tools } = createSolanaAgent(wallet);
+  
+  // Generate AI response
+  const response = await generateText({
+    model: 'openai/gpt-4o',
+    system: `You are a helpful Solana blockchain assistant. 
+    You can help users check their balances, send tokens, and more.
+    The user's wallet address is ${wallet.publicKey.toString()}.`,
+    messages: [{ role: 'user', content: message }],
+    tools,
+  });
+  
+  return {
+    role: 'assistant',
+    content: response.text,
+  };
+}
+```
+</Accordion>
+
+<Note>
+This is a starter template and may not include all features or optimizations for production use (e.g the use of the OpenAI API key on the client). Please review and modify as necessary for your specific use case.
+</Note>
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.

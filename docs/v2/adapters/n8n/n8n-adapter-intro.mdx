@@ -1,0 +1,147 @@
+---
+title: 'n8n Integration'
+description: 'Integrate Solana Agent Kit with n8n workflows'
+icon: 'sitemap'
+---
+
+# n8n Integration
+
+The `n8n-nodes-solana-agent` package provides custom nodes for integrating the Solana Agent Kit with n8n workflows. It enables users to interact with the Solana blockchain through automated workflows without coding.
+
+## Installation
+
+### Local Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/n8n-nodes-solana-agent
+cd n8n-nodes-solana-agent
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Build the project:
+```bash
+npm run build
+```
+
+4. Link to your n8n installation:
+```bash
+npm link
+cd ~/.n8n/nodes
+npm link n8n-nodes-solana-agent
+```
+
+### Global Installation (via npm)
+
+```bash
+npm install -g n8n-nodes-solana-agent
+```
+
+## Features
+
+### Token Operations
+
+| Operation | Description |
+|-----------|-------------|
+| Create Token | Create a new SPL token on Solana |
+| Mint Token | Mint additional tokens to an address |
+| Transfer Token | Send tokens to another wallet |
+
+### NFT Operations
+
+| Operation | Description |
+|-----------|-------------|
+| Deploy Collection | Create a new NFT collection |
+| Mint NFT | Create a new NFT within a collection |
+| List NFT for Sale | List an NFT on a marketplace |
+
+### DeFi Operations (Coming soon)
+
+| Operation | Description |
+|-----------|-------------|
+| Swap Tokens | Exchange one token for another |
+| Provide Liquidity | Add liquidity to DEX pools |
+| Yield Farming | Set up automated yield farming |
+
+## Configuration
+
+To use the Solana Agent nodes in n8n, you need to configure credentials:
+
+1. Add your Solana private key
+2. Set your preferred RPC URL
+3. Add your OpenAI API key (for AI-powered features)
+
+## Available Operations
+
+### Token Operations
+
+#### Create Token
+Create a new SPL token on the Solana blockchain.
+
+**Required fields:**
+- Token Name: The name of your token
+- Token Symbol: A short symbol for the token (e.g., "SOL", "USDC")
+
+**Optional fields:**
+- Decimals: Number of decimal places (default: 9)
+- Initial Supply: Amount to mint initially (default: 0)
+
+#### Mint Token
+Mint additional tokens to a specified address.
+
+**Required fields:**
+- Token Address: The mint address of the token
+- Amount: Quantity to mint
+- Recipient Address: Where to send the minted tokens
+
+### NFT Operations
+
+#### Deploy Collection
+Create a new NFT collection.
+
+**Required fields:**
+- Collection Name: The name of your NFT collection
+- Collection Symbol: A short symbol for the collection
+
+**Optional fields:**
+- Description: Details about the collection
+- Base URI: Base URI for the collection metadata
+
+#### Mint NFT
+Create a new NFT within a collection.
+
+**Required fields:**
+- Collection Address: The address of the collection
+- NFT Name: Name of the NFT
+- NFT URI: URI to the NFT metadata
+
+## Development
+
+If you want to contribute to this node or modify its functionality:
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/n8n-nodes-solana-agent
+```
+
+2. Install dependencies
+```bash
+cd n8n-nodes-solana-agent
+npm install
+```
+
+3. Build the project
+```bash
+npm run build
+```
+
+4. Test your changes
+```bash
+npm run test
+```
+
+For more detailed information, please refer to the full documentation at [docs.sendai.fun](https://docs.sendai.fun).

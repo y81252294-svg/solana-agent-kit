@@ -1,0 +1,1390 @@
+---
+title: "SolanaAgentKit"
+description: "Documentation for SolanaAgentKit"
+---
+
+[**solana-agent-kit v1.3.7**](../README.md)
+
+***
+
+[solana-agent-kit](../README.md) / SolanaAgentKit
+
+# Class: SolanaAgentKit
+
+Defined in: [agent/index.ts:89](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L89)
+
+Main class for interacting with Solana blockchain
+Provides a unified interface for token operations, NFT management, trading and more
+
+ SolanaAgentKit
+
+## Constructors
+
+### new SolanaAgentKit()
+
+> **new SolanaAgentKit**(`private_key`, `rpc_url`, `openai_api_key`): [`SolanaAgentKit`](SolanaAgentKit.md)
+
+Defined in: [agent/index.ts:103](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L103)
+
+#### Parameters
+
+##### private\_key
+
+`string`
+
+##### rpc\_url
+
+`string`
+
+##### openai\_api\_key
+
+`null` | `string`
+
+#### Returns
+
+[`SolanaAgentKit`](SolanaAgentKit.md)
+
+#### Deprecated
+
+Using openai_api_key directly in constructor is deprecated.
+Please use the new constructor with Config object instead:
+
+#### Example
+
+```ts
+const agent = new SolanaAgentKit(privateKey, rpcUrl, {
+  OPENAI_API_KEY: 'your-key'
+});
+```
+
+### new SolanaAgentKit()
+
+> **new SolanaAgentKit**(`private_key`, `rpc_url`, `config`): [`SolanaAgentKit`](SolanaAgentKit.md)
+
+Defined in: [agent/index.ts:108](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L108)
+
+#### Parameters
+
+##### private\_key
+
+`string`
+
+##### rpc\_url
+
+`string`
+
+##### config
+
+[`Config`](../interfaces/Config.md)
+
+#### Returns
+
+[`SolanaAgentKit`](SolanaAgentKit.md)
+
+## Methods
+
+### requestFaucetFunds()
+
+> **requestFaucetFunds**(): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:129](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L129)
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### deployToken()
+
+> **deployToken**(`name`, `uri`, `symbol`, `decimals`, `initialSupply`?): `Promise`\<\{ `mint`: `PublicKey`; \}\>
+
+Defined in: [agent/index.ts:133](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L133)
+
+#### Parameters
+
+##### name
+
+`string`
+
+##### uri
+
+`string`
+
+##### symbol
+
+`string`
+
+##### decimals
+
+`number` = `DEFAULT_OPTIONS.TOKEN_DECIMALS`
+
+##### initialSupply?
+
+`number`
+
+#### Returns
+
+`Promise`\<\{ `mint`: `PublicKey`; \}\>
+
+***
+
+### deployCollection()
+
+> **deployCollection**(`options`): `Promise`\<[`CollectionDeployment`](../interfaces/CollectionDeployment.md)\>
+
+Defined in: [agent/index.ts:143](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L143)
+
+#### Parameters
+
+##### options
+
+[`CollectionOptions`](../interfaces/CollectionOptions.md)
+
+#### Returns
+
+`Promise`\<[`CollectionDeployment`](../interfaces/CollectionDeployment.md)\>
+
+***
+
+### getBalance()
+
+> **getBalance**(`token_address`?): `Promise`\<`number`\>
+
+Defined in: [agent/index.ts:149](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L149)
+
+#### Parameters
+
+##### token\_address?
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`number`\>
+
+***
+
+### getBalanceOther()
+
+> **getBalanceOther**(`walletAddress`, `tokenAddress`?): `Promise`\<`number`\>
+
+Defined in: [agent/index.ts:153](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L153)
+
+#### Parameters
+
+##### walletAddress
+
+`PublicKey`
+
+##### tokenAddress?
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`number`\>
+
+***
+
+### mintNFT()
+
+> **mintNFT**(`collectionMint`, `metadata`, `recipient`?): `Promise`\<[`MintCollectionNFTResponse`](../interfaces/MintCollectionNFTResponse.md)\>
+
+Defined in: [agent/index.ts:160](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L160)
+
+#### Parameters
+
+##### collectionMint
+
+`PublicKey`
+
+##### metadata
+
+###### name
+
+`string`
+
+###### uri
+
+`string`
+
+###### sellerFeeBasisPoints
+
+`number`
+
+###### creators
+
+`object`[]
+
+##### recipient?
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<[`MintCollectionNFTResponse`](../interfaces/MintCollectionNFTResponse.md)\>
+
+***
+
+### transfer()
+
+> **transfer**(`to`, `amount`, `mint`?): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:168](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L168)
+
+#### Parameters
+
+##### to
+
+`PublicKey`
+
+##### amount
+
+`number`
+
+##### mint?
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### registerDomain()
+
+> **registerDomain**(`name`, `spaceKB`?): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:176](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L176)
+
+#### Parameters
+
+##### name
+
+`string`
+
+##### spaceKB?
+
+`number`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### resolveSolDomain()
+
+> **resolveSolDomain**(`domain`): `Promise`\<`PublicKey`\>
+
+Defined in: [agent/index.ts:180](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L180)
+
+#### Parameters
+
+##### domain
+
+`string`
+
+#### Returns
+
+`Promise`\<`PublicKey`\>
+
+***
+
+### getPrimaryDomain()
+
+> **getPrimaryDomain**(`account`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:184](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L184)
+
+#### Parameters
+
+##### account
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### trade()
+
+> **trade**(`outputMint`, `inputAmount`, `inputMint`?, `slippageBps`?): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:188](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L188)
+
+#### Parameters
+
+##### outputMint
+
+`PublicKey`
+
+##### inputAmount
+
+`number`
+
+##### inputMint?
+
+`PublicKey`
+
+##### slippageBps?
+
+`number` = `DEFAULT_OPTIONS.SLIPPAGE_BPS`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### limitOrder()
+
+> **limitOrder**(`marketId`, `quantity`, `side`, `price`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:197](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L197)
+
+#### Parameters
+
+##### marketId
+
+`PublicKey`
+
+##### quantity
+
+`number`
+
+##### side
+
+`string`
+
+##### price
+
+`number`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### batchOrder()
+
+> **batchOrder**(`marketId`, `orders`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:206](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L206)
+
+#### Parameters
+
+##### marketId
+
+`PublicKey`
+
+##### orders
+
+[`OrderParams`](../interfaces/OrderParams.md)[]
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### cancelAllOrders()
+
+> **cancelAllOrders**(`marketId`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:213](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L213)
+
+#### Parameters
+
+##### marketId
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### withdrawAll()
+
+> **withdrawAll**(`marketId`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:217](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L217)
+
+#### Parameters
+
+##### marketId
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### openPerpTradeLong()
+
+> **openPerpTradeLong**(`args`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:221](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L221)
+
+#### Parameters
+
+##### args
+
+`Omit`\<\{ `agent`: [`SolanaAgentKit`](SolanaAgentKit.md); `price`: `number`; `collateralAmount`: `number`; `collateralMint`: `PublicKey`; `leverage`: `number`; `tradeMint`: `PublicKey`; `slippage`: `number`; \}, `"agent"`\>
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### openPerpTradeShort()
+
+> **openPerpTradeShort**(`args`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:230](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L230)
+
+#### Parameters
+
+##### args
+
+`Omit`\<\{ `agent`: [`SolanaAgentKit`](SolanaAgentKit.md); `price`: `number`; `collateralAmount`: `number`; `collateralMint`: `PublicKey`; `leverage`: `number`; `tradeMint`: `PublicKey`; `slippage`: `number`; \}, `"agent"`\>
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### closePerpTradeShort()
+
+> **closePerpTradeShort**(`args`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:239](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L239)
+
+#### Parameters
+
+##### args
+
+`Omit`\<\{ `agent`: [`SolanaAgentKit`](SolanaAgentKit.md); `price`: `number`; `tradeMint`: `PublicKey`; \}, `"agent"`\>
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### closePerpTradeLong()
+
+> **closePerpTradeLong**(`args`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:248](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L248)
+
+#### Parameters
+
+##### args
+
+`Omit`\<\{ `agent`: [`SolanaAgentKit`](SolanaAgentKit.md); `price`: `number`; `tradeMint`: `PublicKey`; \}, `"agent"`\>
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### lendAssets()
+
+> **lendAssets**(`amount`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:257](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L257)
+
+#### Parameters
+
+##### amount
+
+`number`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### getTPS()
+
+> **getTPS**(): `Promise`\<`number`\>
+
+Defined in: [agent/index.ts:261](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L261)
+
+#### Returns
+
+`Promise`\<`number`\>
+
+***
+
+### getTokenDataByAddress()
+
+> **getTokenDataByAddress**(`mint`): `Promise`\<`undefined` \| [`JupiterTokenData`](../interfaces/JupiterTokenData.md)\>
+
+Defined in: [agent/index.ts:265](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L265)
+
+#### Parameters
+
+##### mint
+
+`string`
+
+#### Returns
+
+`Promise`\<`undefined` \| [`JupiterTokenData`](../interfaces/JupiterTokenData.md)\>
+
+***
+
+### getTokenDataByTicker()
+
+> **getTokenDataByTicker**(`ticker`): `Promise`\<`undefined` \| [`JupiterTokenData`](../interfaces/JupiterTokenData.md)\>
+
+Defined in: [agent/index.ts:271](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L271)
+
+#### Parameters
+
+##### ticker
+
+`string`
+
+#### Returns
+
+`Promise`\<`undefined` \| [`JupiterTokenData`](../interfaces/JupiterTokenData.md)\>
+
+***
+
+### fetchTokenPrice()
+
+> **fetchTokenPrice**(`mint`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:277](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L277)
+
+#### Parameters
+
+##### mint
+
+`string`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### launchPumpFunToken()
+
+> **launchPumpFunToken**(`tokenName`, `tokenTicker`, `description`, `imageUrl`, `options`?): `Promise`\<[`PumpfunLaunchResponse`](../interfaces/PumpfunLaunchResponse.md)\>
+
+Defined in: [agent/index.ts:281](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L281)
+
+#### Parameters
+
+##### tokenName
+
+`string`
+
+##### tokenTicker
+
+`string`
+
+##### description
+
+`string`
+
+##### imageUrl
+
+`string`
+
+##### options?
+
+[`PumpFunTokenOptions`](../interfaces/PumpFunTokenOptions.md)
+
+#### Returns
+
+`Promise`\<[`PumpfunLaunchResponse`](../interfaces/PumpfunLaunchResponse.md)\>
+
+***
+
+### stake()
+
+> **stake**(`amount`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:298](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L298)
+
+#### Parameters
+
+##### amount
+
+`number`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### restake()
+
+> **restake**(`amount`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:302](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L302)
+
+#### Parameters
+
+##### amount
+
+`number`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### sendCompressedAirdrop()
+
+> **sendCompressedAirdrop**(`mintAddress`, `amount`, `decimals`, `recipients`, `priorityFeeInLamports`, `shouldLog`): `Promise`\<`string`[]\>
+
+Defined in: [agent/index.ts:306](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L306)
+
+#### Parameters
+
+##### mintAddress
+
+`string`
+
+##### amount
+
+`number`
+
+##### decimals
+
+`number`
+
+##### recipients
+
+`string`[]
+
+##### priorityFeeInLamports
+
+`number`
+
+##### shouldLog
+
+`boolean`
+
+#### Returns
+
+`Promise`\<`string`[]\>
+
+***
+
+### orcaClosePosition()
+
+> **orcaClosePosition**(`positionMintAddress`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:325](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L325)
+
+#### Parameters
+
+##### positionMintAddress
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### orcaCreateCLMM()
+
+> **orcaCreateCLMM**(`mintDeploy`, `mintPair`, `initialPrice`, `feeTier`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:329](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L329)
+
+#### Parameters
+
+##### mintDeploy
+
+`PublicKey`
+
+##### mintPair
+
+`PublicKey`
+
+##### initialPrice
+
+`Decimal`
+
+##### feeTier
+
+`1` | `2` | `4` | `5` | `16` | `30` | `65` | `100` | `200`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### orcaCreateSingleSidedLiquidityPool()
+
+> **orcaCreateSingleSidedLiquidityPool**(`depositTokenAmount`, `depositTokenMint`, `otherTokenMint`, `initialPrice`, `maxPrice`, `feeTier`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:338](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L338)
+
+#### Parameters
+
+##### depositTokenAmount
+
+`number`
+
+##### depositTokenMint
+
+`PublicKey`
+
+##### otherTokenMint
+
+`PublicKey`
+
+##### initialPrice
+
+`Decimal`
+
+##### maxPrice
+
+`Decimal`
+
+##### feeTier
+
+`1` | `2` | `4` | `5` | `16` | `30` | `65` | `100` | `200`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### orcaFetchPositions()
+
+> **orcaFetchPositions**(): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:357](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L357)
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### orcaOpenCenteredPositionWithLiquidity()
+
+> **orcaOpenCenteredPositionWithLiquidity**(`whirlpoolAddress`, `priceOffsetBps`, `inputTokenMint`, `inputAmount`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:361](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L361)
+
+#### Parameters
+
+##### whirlpoolAddress
+
+`PublicKey`
+
+##### priceOffsetBps
+
+`number`
+
+##### inputTokenMint
+
+`PublicKey`
+
+##### inputAmount
+
+`Decimal`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### orcaOpenSingleSidedPosition()
+
+> **orcaOpenSingleSidedPosition**(`whirlpoolAddress`, `distanceFromCurrentPriceBps`, `widthBps`, `inputTokenMint`, `inputAmount`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:376](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L376)
+
+#### Parameters
+
+##### whirlpoolAddress
+
+`PublicKey`
+
+##### distanceFromCurrentPriceBps
+
+`number`
+
+##### widthBps
+
+`number`
+
+##### inputTokenMint
+
+`PublicKey`
+
+##### inputAmount
+
+`Decimal`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### resolveAllDomains()
+
+> **resolveAllDomains**(`domain`): `Promise`\<`undefined` \| `PublicKey`\>
+
+Defined in: [agent/index.ts:393](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L393)
+
+#### Parameters
+
+##### domain
+
+`string`
+
+#### Returns
+
+`Promise`\<`undefined` \| `PublicKey`\>
+
+***
+
+### getOwnedAllDomains()
+
+> **getOwnedAllDomains**(`owner`): `Promise`\<`string`[]\>
+
+Defined in: [agent/index.ts:397](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L397)
+
+#### Parameters
+
+##### owner
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`string`[]\>
+
+***
+
+### getOwnedDomainsForTLD()
+
+> **getOwnedDomainsForTLD**(`tld`): `Promise`\<`string`[]\>
+
+Defined in: [agent/index.ts:401](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L401)
+
+#### Parameters
+
+##### tld
+
+`string`
+
+#### Returns
+
+`Promise`\<`string`[]\>
+
+***
+
+### getAllDomainsTLDs()
+
+> **getAllDomainsTLDs**(): `Promise`\<`string`[]\>
+
+Defined in: [agent/index.ts:405](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L405)
+
+#### Returns
+
+`Promise`\<`string`[]\>
+
+***
+
+### getAllRegisteredAllDomains()
+
+> **getAllRegisteredAllDomains**(): `Promise`\<`string`[]\>
+
+Defined in: [agent/index.ts:409](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L409)
+
+#### Returns
+
+`Promise`\<`string`[]\>
+
+***
+
+### getMainAllDomainsDomain()
+
+> **getMainAllDomainsDomain**(`owner`): `Promise`\<`null` \| `string`\>
+
+Defined in: [agent/index.ts:413](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L413)
+
+#### Parameters
+
+##### owner
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`null` \| `string`\>
+
+***
+
+### raydiumCreateAmmV4()
+
+> **raydiumCreateAmmV4**(`marketId`, `baseAmount`, `quoteAmount`, `startTime`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:417](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L417)
+
+#### Parameters
+
+##### marketId
+
+`PublicKey`
+
+##### baseAmount
+
+`BN`
+
+##### quoteAmount
+
+`BN`
+
+##### startTime
+
+`BN`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### raydiumCreateClmm()
+
+> **raydiumCreateClmm**(`mint1`, `mint2`, `configId`, `initialPrice`, `startTime`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:434](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L434)
+
+#### Parameters
+
+##### mint1
+
+`PublicKey`
+
+##### mint2
+
+`PublicKey`
+
+##### configId
+
+`PublicKey`
+
+##### initialPrice
+
+`Decimal`
+
+##### startTime
+
+`BN`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### raydiumCreateCpmm()
+
+> **raydiumCreateCpmm**(`mint1`, `mint2`, `configId`, `mintAAmount`, `mintBAmount`, `startTime`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:451](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L451)
+
+#### Parameters
+
+##### mint1
+
+`PublicKey`
+
+##### mint2
+
+`PublicKey`
+
+##### configId
+
+`PublicKey`
+
+##### mintAAmount
+
+`BN`
+
+##### mintBAmount
+
+`BN`
+
+##### startTime
+
+`BN`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### openbookCreateMarket()
+
+> **openbookCreateMarket**(`baseMint`, `quoteMint`, `lotSize`, `tickSize`): `Promise`\<`string`[]\>
+
+Defined in: [agent/index.ts:471](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L471)
+
+#### Parameters
+
+##### baseMint
+
+`PublicKey`
+
+##### quoteMint
+
+`PublicKey`
+
+##### lotSize
+
+`number` = `1`
+
+##### tickSize
+
+`number` = `0.01`
+
+#### Returns
+
+`Promise`\<`string`[]\>
+
+***
+
+### manifestCreateMarket()
+
+> **manifestCreateMarket**(`baseMint`, `quoteMint`): `Promise`\<`string`[]\>
+
+Defined in: [agent/index.ts:487](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L487)
+
+#### Parameters
+
+##### baseMint
+
+`PublicKey`
+
+##### quoteMint
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`string`[]\>
+
+***
+
+### getPythPriceFeedID()
+
+> **getPythPriceFeedID**(`tokenSymbol`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:494](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L494)
+
+#### Parameters
+
+##### tokenSymbol
+
+`string`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### getPythPrice()
+
+> **getPythPrice**(`priceFeedID`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:498](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L498)
+
+#### Parameters
+
+##### priceFeedID
+
+`string`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### createGibworkTask()
+
+> **createGibworkTask**(`title`, `content`, `requirements`, `tags`, `tokenMintAddress`, `tokenAmount`, `payer`?): `Promise`\<[`GibworkCreateTaskReponse`](../interfaces/GibworkCreateTaskReponse.md)\>
+
+Defined in: [agent/index.ts:502](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L502)
+
+#### Parameters
+
+##### title
+
+`string`
+
+##### content
+
+`string`
+
+##### requirements
+
+`string`
+
+##### tags
+
+`string`[]
+
+##### tokenMintAddress
+
+`string`
+
+##### tokenAmount
+
+`number`
+
+##### payer?
+
+`string`
+
+#### Returns
+
+`Promise`\<[`GibworkCreateTaskReponse`](../interfaces/GibworkCreateTaskReponse.md)\>
+
+***
+
+### rockPaperScissors()
+
+> **rockPaperScissors**(`amount`, `choice`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:523](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L523)
+
+#### Parameters
+
+##### amount
+
+`number`
+
+##### choice
+
+`"rock"` | `"paper"` | `"scissors"`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### createTiplink()
+
+> **createTiplink**(`amount`, `splmintAddress`?): `Promise`\<\{ `url`: `string`; `signature`: `string`; \}\>
+
+Defined in: [agent/index.ts:529](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L529)
+
+#### Parameters
+
+##### amount
+
+`number`
+
+##### splmintAddress?
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<\{ `url`: `string`; `signature`: `string`; \}\>
+
+***
+
+### tensorListNFT()
+
+> **tensorListNFT**(`nftMint`, `price`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:533](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L533)
+
+#### Parameters
+
+##### nftMint
+
+`PublicKey`
+
+##### price
+
+`number`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### tensorCancelListing()
+
+> **tensorCancelListing**(`nftMint`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:537](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L537)
+
+#### Parameters
+
+##### nftMint
+
+`PublicKey`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+***
+
+### fetchTokenReportSummary()
+
+> **fetchTokenReportSummary**(`mint`): `Promise`\<[`TokenCheck`](../interfaces/TokenCheck.md)\>
+
+Defined in: [agent/index.ts:541](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L541)
+
+#### Parameters
+
+##### mint
+
+`string`
+
+#### Returns
+
+`Promise`\<[`TokenCheck`](../interfaces/TokenCheck.md)\>
+
+***
+
+### fetchTokenDetailedReport()
+
+> **fetchTokenDetailedReport**(`mint`): `Promise`\<[`TokenCheck`](../interfaces/TokenCheck.md)\>
+
+Defined in: [agent/index.ts:545](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L545)
+
+#### Parameters
+
+##### mint
+
+`string`
+
+#### Returns
+
+`Promise`\<[`TokenCheck`](../interfaces/TokenCheck.md)\>
+
+***
+
+### flashOpenTrade()
+
+> **flashOpenTrade**(`params`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:554](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L554)
+
+Opens a new trading position on Flash.Trade
+
+#### Parameters
+
+##### params
+
+[`FlashTradeParams`](../interfaces/FlashTradeParams.md)
+
+Flash trade parameters including market, side, collateral, leverage, and pool name
+
+#### Returns
+
+`Promise`\<`string`\>
+
+Transaction signature
+
+***
+
+### flashCloseTrade()
+
+> **flashCloseTrade**(`params`): `Promise`\<`string`\>
+
+Defined in: [agent/index.ts:563](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L563)
+
+Closes an existing trading position on Flash.Trade
+
+#### Parameters
+
+##### params
+
+[`FlashCloseTradeParams`](../interfaces/FlashCloseTradeParams.md)
+
+Flash trade close parameters
+
+#### Returns
+
+`Promise`\<`string`\>
+
+Transaction signature
+
+## Properties
+
+### connection
+
+> **connection**: `Connection`
+
+Defined in: [agent/index.ts:90](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L90)
+
+Solana RPC connection
+
+***
+
+### wallet
+
+> **wallet**: `Keypair`
+
+Defined in: [agent/index.ts:91](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L91)
+
+Wallet keypair for signing transactions
+
+***
+
+### wallet\_address
+
+> **wallet\_address**: `PublicKey`
+
+Defined in: [agent/index.ts:92](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L92)
+
+Public key of the wallet
+
+***
+
+### config
+
+> **config**: [`Config`](../interfaces/Config.md)
+
+Defined in: [agent/index.ts:93](https://github.com/sendaifun/solana-agent-kit/blob/6acfa958180602da3c2d2ac883bf660ca90dba2f/src/agent/index.ts#L93)
+
+Configuration object

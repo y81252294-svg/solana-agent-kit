@@ -1,0 +1,153 @@
+---
+title: 'DeFi Plugin'
+description: 'Interact with DeFi protocols on the Solana blockchain'
+icon: 'chart-line'
+---
+
+# DeFi Plugin
+
+The `@solana-agent-kit/plugin-defi` plugin provides a comprehensive suite of tools and actions to interact with various DeFi protocols on the Solana blockchain. It enables users to perform a wide range of DeFi operations, including trading, lending, borrowing, and cross-chain bridging.
+
+## Installation
+
+Install the plugin alongside the core Solana Agent Kit:
+
+```bash
+npm install solana-agent-kit @solana-agent-kit/plugin-defi
+```
+
+## Integration
+
+Add the DeFi plugin to your agent:
+
+```javascript
+import { SolanaAgentKit } from "solana-agent-kit";
+import DefiPlugin from "@solana-agent-kit/plugin-defi";
+
+const agent = new SolanaAgentKit(
+  wallet,
+  "YOUR_RPC_URL",
+  {
+    OPENAI_API_KEY: "YOUR_OPENAI_API_KEY",
+  }
+).use(DefiPlugin);
+```
+
+## Available Tools
+
+### Adrena
+| Tool Name | Description |
+|-----------|-------------|
+| `openPerpTradeLong` | Open a long perpetual trade |
+| `openPerpTradeShort` | Open a short perpetual trade |
+| `closePerpTradeLong` | Close a long perpetual trade |
+| `closePerpTradeShort` | Close a short perpetual trade |
+
+### Flash
+| Tool Name | Description |
+|-----------|-------------|
+| `flashOpenTrade` | Open a flash trade |
+| `flashCloseTrade` | Close a flash trade |
+
+### Lulo
+| Tool Name | Description |
+|-----------|-------------|
+| `lendAsset` | Lend an asset |
+| `luloLend` | Lend using Lulo |
+| `luloWithdraw` | Withdraw from Lulo |
+
+### Manifest
+| Tool Name | Description |
+|-----------|-------------|
+| `limitOrder` | Create a limit order |
+| `cancelAllOrders` | Cancel all orders |
+| `withdrawAll` | Withdraw all assets |
+| `manifestCreateMarket` | Create a market on Manifest |
+
+### Debridge
+| Tool Name | Description |
+|-----------|-------------|
+| `checkDebridgeTransactionStatus` | Check the status of a Debridge transaction |
+| `createDebridgeBridgeOrder` | Create a bridge order |
+| `executeDebridgeBridgeOrder` | Execute a bridge order |
+| `getBridgeQuote` | Get a bridge quote |
+| `getDebridgeSupportedChains` | Get supported chains for Debridge |
+| `getDebridgeTokensInfo` | Get token information for Debridge |
+
+### Drift
+| Tool Name | Description |
+|-----------|-------------|
+| `driftPerpTrade` | Open a perpetual trade on Drift |
+| `calculatePerpMarketFundingRate` | Calculate the funding rate for a perpetual market |
+| `createVault` | Create a vault |
+| `createDriftUserAccount` | Create a Drift user account |
+| `depositIntoVault` | Deposit into a vault |
+| `withdrawFromDriftVault` | Withdraw from a Drift vault |
+| `stakeToDriftInsuranceFund` | Stake to the Drift insurance fund |
+
+### Openbook
+| Tool Name | Description |
+|-----------|-------------|
+| `openbookCreateMarket` | Create a market on the Openbook DEX |
+
+### Fluxbeam
+| Tool Name | Description |
+|-----------|-------------|
+| `fluxBeamCreatePool` | Create a pool on FluxBeam |
+
+### Orca
+| Tool Name | Description |
+|-----------|-------------|
+| `orcaClosePosition` | Close a position on Orca |
+| `orcaCreateCLMM` | Create a CLMM on Orca |
+| `orcaOpenCenteredPositionWithLiquidity` | Open a centered position with liquidity on Orca |
+
+### Ranger
+| Tool Name | Description |
+|-----------|-------------|
+| `openPerpTradeRanger` | Open a new perpetual trading position |
+| `closePerpTradeRanger` | Close an existing perpetual trading position |
+| `increasePerpPositionRanger` | Increase an existing perpetual position |
+| `decreasePerpPositionRanger` | Decrease an existing perpetual position |
+| `withdrawBalanceRanger` | Withdraw available balance from Ranger |
+| `withdrawCollateralRanger` | Withdraw collateral from an existing position |
+| `getPositions` | Get all positions for a specific wallet |
+| `getQuote` | Get a quote for opening or modifying a position |
+| `getTradeHistory` | Get the trade history for a specific wallet |
+| `getLiquidationsLatest` | Get the latest liquidation events |
+| `getLiquidationsTotals` | Get total liquidation statistics |
+| `getFundingRateArbs` | Get funding rate arbitrage opportunities |
+| `getFundingRatesAccumulated` | Get accumulated funding rates |
+| `getBorrowRatesAccumulated` | Get accumulated borrow rates |
+
+### Raydium
+| Tool Name | Description |
+|-----------|-------------|
+| `raydiumCreateAmmV4` | Create an AMM v4 (Legacy) pool with OpenBook market integration |
+| `raydiumCreateClmm` | Create a Concentrated Liquidity Market Maker (CLMM) pool with custom ranges |
+| `raydiumCreateCpmm` | Create a Constant Product Market Maker (CPMM) pool with Token-2022 support |
+| `raydiumCreateLaunchlabToken` | Create and launch tokens with automatic pool migration and buy functionality |
+
+### Solayer
+| Tool Name | Description |
+|-----------|-------------|
+| `stakeWithSolayer` | Stake SOL with Solayer |
+
+### Voltr
+| Tool Name | Description |
+|-----------|-------------|
+| `voltrDepositStrategy` | Deposit into a Voltr strategy |
+| `voltrGetPositionValues` | Get position values for Voltr |
+
+### Sanctum
+| Tool Name | Description |
+|-----------|-------------|
+| `sanctumSwapLST` | Swap LSTs on Sanctum |
+| `sanctumAddLiquidity` | Add liquidity on Sanctum |
+| `sanctumRemoveLiquidity` | Remove liquidity on Sanctum |
+| `sanctumGetLSTAPY` | Get the APY for LSTs on Sanctum |
+| `sanctumGetLSTPrice` | Get the price of LSTs on Sanctum |
+| `sanctumGetLSTTVL` | Get the TVL for LSTs on Sanctum |
+| `sanctumGetOwnedLST` | Get owned LSTs on Sanctum |
+
+For more detailed information, please refer to the full documentation at [docs.sendai.fun](https://docs.sendai.fun).

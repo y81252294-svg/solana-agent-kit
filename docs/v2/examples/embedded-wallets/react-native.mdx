@@ -1,0 +1,346 @@
+---
+title: 'Privy App Kit - React Native'
+description: 'Mobile chat application for Solana blockchain interaction with React Native and Privy'
+icon: 'mobile'
+---
+
+<div className="flex flex-col items-center justify-center mb-8">
+  <div className="flex flex-col items-center">
+    <h3 className="text-xl mb-3">Demo</h3>
+    <a href="https://vimeo.com/1076322377" className="mb-2">
+      <img 
+        src="https://github.com/user-attachments/assets/71332279-5886-4321-a9d5-b38eecc94f37" 
+        alt="Demo Video Thumbnail" 
+        className="rounded-md shadow-md max-w-full w-[600px]" 
+      />
+    </a>
+  </div>
+</div>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Embedded Wallet" icon="wallet">
+    Authentication with Privy supporting Google, Apple, and Email login methods
+  </Card>
+  <Card title="Natural Language Interface" icon="message-bot">
+    Chat interface for interacting with Solana blockchain using simple language
+  </Card>
+  <Card title="AI-Powered" icon="robot">
+    Solana transaction capabilities through an intelligent AI assistant
+  </Card>
+  <Card title="Chat History" icon="clock-rotate-left">
+    Persistent chat history management across sessions
+  </Card>
+  <Card title="Profile Management" icon="user-gear">
+    User profile creation and management
+  </Card>
+  <Card title="Native Mobile Experience" icon="mobile-screen-button">
+    Built with React Native for native mobile performance
+  </Card>
+</CardGroup>
+
+## Prerequisites
+
+- Node.js (v16+)
+- MongoDB
+- OpenAI API Key
+- Helius API Key (for Solana RPC access)
+- iOS/Android development environment
+
+## Setup Instructions
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/yourusername/privy-sak-react-native.git
+    cd privy-sak-react-native
+    ```
+  </Step>
+  
+  <Step title="Install dependencies">
+    ```bash
+    yarn install
+    ```
+  </Step>
+  
+  <Step title="Configure environment variables">
+    Copy the example environment files:
+    
+    ```bash
+    # For client
+    cp .env.local.example .env.local
+    
+    # For server
+    cd server
+    cp .env.example .env
+    cd ..
+    
+    # For Expo configuration
+    cp app.example.json app.json
+    ```
+    
+    Update these files with your app's information and API keys.
+  </Step>
+  
+  <Step title="Start the server">
+    ```bash
+    cd server
+    yarn dev
+    ```
+  </Step>
+  
+  <Step title="Run the app on iOS">
+    ```bash
+    npx expo run:ios
+    ```
+    
+    For Android:
+    ```bash
+    npx expo run:android
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  This app cannot be run with Expo Go as some polyfills used in the project are not compatible with Expo Go. You must use the development build with `npx expo run:ios` or `npx expo run:android`.
+</Note>
+
+## Environment Variables
+
+The following environment variables are required:
+
+### Client (.env.local)
+
+```env
+# OpenAI API Key for chat functionality
+EXPO_PUBLIC_OPENAI_API_KEY=your_openai_api_key
+
+# Server URL
+EXPO_PUBLIC_API_URL=http://localhost:3001
+
+# Helius RPC URL with API key
+EXPO_PUBLIC_HELIUS_URL=https://mainnet.helius-rpc.com/?api-key=your_helius_api_key
+```
+
+### Server (.env)
+
+```env
+# OpenAI API Key
+OPENAI_API_KEY=your_openai_api_key
+
+# MongoDB connection string
+MONGODB_URI=mongodb://localhost:27017/privy-sak
+
+# Helius RPC URL
+HELIUS_STAKED_URL=https://mainnet.helius-rpc.com/?api-key=your_helius_api_key
+
+# Server port
+PORT=3001
+```
+
+## Project Structure
+
+<Accordion title="Client Structure">
+```
+src/
+├── screens/              # App screens
+│   ├── AuthScreen.js     # Authentication screen
+│   ├── ChatScreen.js     # Main chat interface
+│   ├── ProfileScreen.js  # User profile management
+│   └── SettingsScreen.js # App settings
+├── components/           # Reusable components
+│   ├── chat/             # Chat-related components
+│   ├── wallet/           # Wallet components
+│   └── ui/               # UI components
+├── hooks/                # Custom React hooks
+│   ├── useChat.js        # Chat functionality
+│   ├── useSolana.js      # Solana interaction
+│   └── useAuth.js        # Authentication
+├── walletProviders/      # Privy wallet integration
+├── navigation/           # Navigation setup
+├── assets/               # Images, colors, icons
+├── lib/                  # Utility functions
+│   ├── ai/               # AI providers and tools
+│   ├── api/              # API interactions
+│   └── utils/            # Helper functions
+└── state/                # State management
+```
+</Accordion>
+
+<Accordion title="Server Structure">
+```
+server/
+├── controllers/          # API endpoint controllers
+│   ├── authController.js # Authentication endpoints
+│   ├── chatController.js # Chat history management
+│   └── userController.js # User profile management
+├── models/               # MongoDB models
+│   ├── Chat.js           # Chat data model
+│   └── User.js           # User data model
+├── routes/               # API routes
+│   ├── auth.js           # Auth routes
+│   ├── chat.js           # Chat routes
+│   └── user.js           # User routes
+├── middleware/           # Custom middleware
+│   ├── auth.js           # Authentication middleware
+│   └── error.js          # Error handling
+├── db/                   # Database connection
+└── server.js             # Main server file
+```
+</Accordion>
+
+## Privy Integration
+
+This example demonstrates how to integrate Privy's embedded wallet solution with React Native. Key integration points include:
+
+### Wallet Provider Setup
+
+<Accordion title="Wallet Provider Implementation">
+```jsx
+// src/walletProviders/index.js
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { PrivyClient } from '@privy-io/react-native';
+
+const WalletContext = createContext(null);
+
+export function WalletProvider({ children }) {
+  const [privyClient, setPrivyClient] = useState(null);
+  const [wallet, setWallet] = useState(null);
+  const [connected, setConnected] = useState(false);
+  
+  useEffect(() => {
+    const initPrivy = async () => {
+      const client = new PrivyClient({
+        appId: process.env.EXPO_PUBLIC_PRIVY_APP_ID,
+      });
+      
+      setPrivyClient(client);
+      
+      // Check if user is already logged in
+      const session = await client.getSession();
+      if (session) {
+        const walletInfo = await client.getWallet();
+        setWallet(walletInfo);
+        setConnected(true);
+      }
+    };
+    
+    initPrivy();
+  }, []);
+  
+  const login = async (method) => {
+    try {
+      await privyClient.login(method);
+      const walletInfo = await privyClient.getWallet();
+      setWallet(walletInfo);
+      setConnected(true);
+      return true;
+    } catch (error) {
+      console.error('Login failed:', error);
+      return false;
+    }
+  };
+  
+  const logout = async () => {
+    try {
+      await privyClient.logout();
+      setWallet(null);
+      setConnected(false);
+      return true;
+    } catch (error) {
+      console.error('Logout failed:', error);
+      return false;
+    }
+  };
+  
+  return (
+    <WalletContext.Provider
+      value={{
+        privyClient,
+        wallet,
+        connected,
+        login,
+        logout,
+        // Additional wallet functions
+        signTransaction: async (tx) => await wallet?.signTransaction(tx),
+        signMessage: async (msg) => await wallet?.signMessage(msg),
+        sendTransaction: async (tx, connection) => {
+          return await wallet?.sendTransaction(tx, connection);
+        },
+      }}
+    >
+      {children}
+    </WalletContext.Provider>
+  );
+}
+
+export const useWallet = () => useContext(WalletContext);
+```
+</Accordion>
+
+### Solana Agent Kit Integration
+
+<Accordion title="Solana Agent Integration">
+```jsx
+// src/hooks/useSolanaAgent.js
+import { useMemo } from 'react';
+import { SolanaAgentKit, createVercelAITools } from 'solana-agent-kit';
+import TokenPlugin from '@solana-agent-kit/plugin-token';
+import { Connection, PublicKey } from '@solana/web3.js';
+import { useWallet } from '../walletProviders';
+
+export function useSolanaAgent() {
+  const { wallet, connected, signTransaction, signMessage, sendTransaction } = useWallet();
+  
+  const agent = useMemo(() => {
+    if (!connected || !wallet) return null;
+    
+    return new SolanaAgentKit(
+      {
+        publicKey: new PublicKey(wallet.address),
+        signTransaction,
+        signMessage,
+        sendTransaction,
+        signAndSendTransaction: async (tx) => {
+          const signed = await signTransaction(tx);
+          const connection = new Connection(
+            process.env.EXPO_PUBLIC_HELIUS_URL,
+            'confirmed'
+          );
+          const signature = await sendTransaction(signed, connection);
+          return { signature };
+        },
+      },
+      process.env.EXPO_PUBLIC_HELIUS_URL,
+      {}
+    ).use(TokenPlugin);
+  }, [wallet, connected, signTransaction, signMessage, sendTransaction]);
+  
+  const tools = useMemo(() => {
+    if (!agent) return null;
+    return createVercelAITools(agent, agent.actions);
+  }, [agent]);
+  
+  return { agent, tools, isReady: !!agent };
+}
+```
+</Accordion>
+
+## Mobile-Specific Considerations
+
+When working with Solana Agent Kit in React Native, consider these mobile-specific aspects:
+
+1. **Polyfills**: Several Node.js modules need polyfills in React Native
+2. **Performance**: Be mindful of resource usage on mobile devices
+3. **Offline Handling**: Implement proper handling for intermittent connectivity
+4. **Deep Linking**: Configure for wallet connection redirects
+5. **Secure Storage**: Use secure storage for sensitive information
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.

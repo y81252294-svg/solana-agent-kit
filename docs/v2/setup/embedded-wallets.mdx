@@ -1,0 +1,60 @@
+
+## Embedded Wallet Integration
+
+For a better user experience, you can integrate with embedded wallets like Privy instead of directly handling private keys. Here's how to use Solana Agent Kit with the Solana wallet adapter:
+
+```javascript
+import { SolanaAgentKit, createVercelAITools } from "solana-agent-kit";
+import TokenPlugin from "@solana-agent-kit/plugin-token";
+import DefiPlugin from "@solana-agent-kit/plugin-defi";
+import BlinksPlugin from "@solana-agent-kit/plugin-blinks";
+import MiscPlugin from "@solana-agent-kit/plugin-misc";
+import { Connection, PublicKey } from "@solana/web3.js";
+
+// Assuming you have a wallet from Privy or another wallet adapter
+const wallet = wallets[0]; // From useSolanaWallets() or similar
+
+// Create an agent with the wallet adapter
+const agent = new SolanaAgentKit(
+  {
+    publicKey: new PublicKey(wallet.address),
+    signTransaction: async (tx) => {
+      const signed = await wallet.signTransaction(tx);
+      return signed;
+    },
+    signMessage: async (msg) => {
+      const signed = await wallet.signMessage(msg);
+      return signed;
+    },
+    sendTransaction: async (tx) => {
+      const connection = new Connection(
+        "YOUR_RPC_URL",
+        "confirmed"
+      );
+      return await wallet.sendTransaction(tx, connection);
+    },
+    signAllTransactions: async (txs) => {
+      const signed = await wallet.signAllTransactions(txs);
+      return signed;
+    },
+    signAndSendTransaction: async (tx) => {
+      const signed = await wallet.signTransaction(tx);
+      const connection = new Connection(
+        "YOUR_RPC_URL",
+        "confirmed"
+      );
+      const sig = await wallet.sendTransaction(signed, connection);
+      return { signature: sig };
+    },
+  },
+  "YOUR_RPC_URL",
+  {}
+)
+  .use(TokenPlugin)
+  .use(DefiPlugin)
+  .use(BlinksPlugin)
+  .use(MiscPlugin);
+
+// Create tools for your AI model
+const tools = createVercelAITools(agent, agent.actions);
+```

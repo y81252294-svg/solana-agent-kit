@@ -1,0 +1,63 @@
+{
+  "name": "@solana-agent-kit/plugin-nft",
+  "version": "2.0.7",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf dist .turbo node_modules",
+    "build": "tsup src/index.ts --dts --clean --format cjs,esm --out-dir dist",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/y81252294-svg/solana-agent-kit.git"
+  },
+  "homepage": "https://github.com/y81252294-svg/solana-agent-kit/tree/v2/packages/plugin-nft",
+  "author": {
+    "name": "Shourya Goyal",
+    "url": "https://www.linkedin.com/in/shourya-goyal-804632254/"
+  },
+  "dependencies": {
+    "@3land/listings-sdk": "^0.0.7",
+    "@aptos-labs/aptos-client": "^1.1.0",
+    "@coral-xyz/anchor": "^0.30.1",
+    "@metaplex-foundation/digital-asset-standard-api": "^1.0.4",
+    "@metaplex-foundation/mpl-core": "^1.2.0",
+    "@metaplex-foundation/mpl-token-metadata": "^3.3.0",
+    "@metaplex-foundation/mpl-toolbox": "^0.9.4",
+    "@metaplex-foundation/umi": "^1.0.0",
+    "@metaplex-foundation/umi-bundle-defaults": "^1.0.0",
+    "@metaplex-foundation/umi-web3js-adapters": "^1.0.0",
+    "@solana/codecs": "^2.1.0",
+    "@solana/spl-token": "^0.4.9",
+    "@tensor-oss/tensorswap-sdk": "^4.5.0",
+    "@types/bn.js": "^5.1.6",
+    "bn.js": "^5.2.1",
+    "redaxios": "^0.5.1",
+    "rpc-websockets": "^10.0.0",
+    "solana-agent-kit": "workspace:*",
+    "zod": "^3.24.1"
+  },
+  "peerDependencies": {
+    "@solana/web3.js": "^1.98.2",
+    "solana-agent-kit": "2.0.7"
+  }
+}

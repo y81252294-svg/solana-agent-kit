@@ -1,0 +1,234 @@
+---
+title: 'Privy Agent Tanstack Starter'
+description: 'Modern web application with Privy wallet integration for Solana Agent Kit'
+icon: 'shield-keyhole'
+---
+
+A modern web application built with TanStack Router, React, and Solana integration, featuring authentication via Privy and AI capabilities.
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key">
+    Secure user authentication powered by Privy's embedded wallet solution
+  </Card>
+  <Card title="Solana Integration" icon="blockchain">
+    Built with Solana Agent Kit for blockchain interactions and transactions
+  </Card>
+  <Card title="AI Capabilities" icon="robot">
+    OpenAI integration for intelligent features and natural language interactions
+  </Card>
+  <Card title="Modern UI" icon="paintbrush">
+    Built with Radix UI components and Tailwind CSS for a sleek user experience
+  </Card>
+  <Card title="Type Safety" icon="shield-check">
+    Full TypeScript support throughout the application codebase
+  </Card>
+  <Card title="Database Integration" icon="database">
+    PostgreSQL with Drizzle ORM for efficient data management
+  </Card>
+</CardGroup>
+
+## Tech Stack
+
+| Category | Technologies |
+|----------|--------------|
+| Frontend | React 19, TanStack Router |
+| Authentication | Privy |
+| Blockchain | Solana Web3.js, Solana Agent Kit |
+| Styling | Tailwind CSS, Radix UI |
+| Database | PostgreSQL, Drizzle ORM |
+| AI | OpenAI SDK |
+| Development | TypeScript, Biome, Vinxi |
+
+## Installation
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    # Clone the starter template
+    npx gitpick sendaifun/solana-agent-kit/examples/privy-agent-tanstack-starter -b v2
+    cd privy-solana-agent
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    pnpm install
+    ```
+  </Step>
+  <Step title="Set up environment variables">
+    Create a `.env` file in the root directory with the following variables:
+    
+    ```
+    # Privy credentials
+    VITE_PRIVY_APP_ID=
+    
+    # Database connection
+    DATABASE_URL=
+    
+    # Solana RPC URL
+    VITE_RPC_URL=
+    
+    # OpenAI API key
+    OPENAI_API_KEY=
+    ```
+  </Step>
+  <Step title="Run database migrations">
+    ```bash
+    pnpm db:generate
+    pnpm db:migrate
+    ```
+  </Step>
+</Steps>
+
+## Development
+
+Start the development server:
+
+```bash
+pnpm dev
+```
+
+The application will be available at `http://localhost:3000`.
+
+## Linting and Formatting
+
+| Command | Description |
+|---------|-------------|
+| `pnpm lint` | Run linting |
+| `pnpm lint:fix` | Fix linting issues |
+
+## Database Management
+
+| Command | Description |
+|---------|-------------|
+| `pnpm db:generate` | Generate migrations |
+| `pnpm db:migrate` | Run migrations |
+| `pnpm db:studio` | Open database studio |
+| `pnpm db:push` | Push schema changes |
+| `pnpm db:pull` | Pull schema changes |
+| `pnpm db:check` | Check schema |
+| `pnpm db:up` | Update schema |
+
+## Project Structure
+
+```
+src/
+├── components/     # React components
+├── functions/     # Server-side functions
+├── hooks/         # Custom React hooks
+├── lib/           # Library code and utilities
+├── routes/        # Application routes
+├── styles/        # Global styles
+└── utils/         # Utility functions
+```
+
+## Privy Integration
+
+This starter uses Privy to provide a seamless embedded wallet experience. Privy offers several advantages for Solana Agent Kit applications:
+
+- **Simplified Authentication**: Email, social, and wallet-based auth
+- **Human-in-the-loop Transactions**: Users confirm all transactions
+- **Multi-device Support**: Access from multiple devices
+- **Non-custodial**: Users maintain control of their keys
+- **Social Recovery Options**: Easy key recovery methods
+
+<Accordion title="Privy Integration Example">
+```tsx
+import { useSolanaWallets } from '@privy-io/react-auth';
+import { SolanaAgentKit, createVercelAITools } from 'solana-agent-kit';
+import TokenPlugin from '@solana-agent-kit/plugin-token';
+import { Connection, PublicKey } from '@solana/web3.js';
+
+export function useSolanaAgent() {
+  // Get Solana wallets from Privy
+  const { wallets, ready } = useSolanaWallets();
+  
+  // Create agent when wallet is ready
+  const agent = useMemo(() => {
+    if (ready && wallets.length > 0) {
+      const wallet = wallets[0];
+      
+      return new SolanaAgentKit(
+        {
+          publicKey: new PublicKey(wallet.address),
+          
+          // Handle transaction signing through Privy
+          signTransaction: async (tx) => {
+            return await wallet.signTransaction(tx);
+          },
+          
+          // Handle message signing through Privy
+          signMessage: async (msg) => {
+            return await wallet.signMessage(msg);
+          },
+          
+          // Handle transaction sending
+          sendTransaction: async (tx) => {
+            const connection = new Connection(
+              import.meta.env.VITE_RPC_URL,
+              'confirmed'
+            );
+            return await wallet.sendTransaction(tx, connection);
+          },
+          
+          // Handle multiple transaction signing
+          signAllTransactions: async (txs) => {
+            return await wallet.signAllTransactions(txs);
+          },
+        },
+        import.meta.env.VITE_RPC_URL,
+        {}
+      ).use(TokenPlugin);
+    }
+    
+    return null;
+  }, [wallets, ready]);
+  
+  // Create tools for AI integration
+  const tools = useMemo(() => {
+    if (agent) {
+      return createVercelAITools(agent, agent.actions);
+    }
+    return null;
+  }, [agent]);
+  
+  return { agent, tools, isReady: ready && wallets.length > 0 };
+}
+```
+</Accordion>
+
+## Key Benefits
+
+### User-friendly Authentication
+
+Privy provides a streamlined authentication experience that supports multiple methods including email, social logins, and existing wallets. This makes your application accessible to both crypto novices and experienced users.
+
+### Human-in-the-loop Security
+
+All transactions require explicit user approval, ensuring that users maintain control over their assets while still allowing for an AI-assisted experience.
+
+### Database Integration
+
+This starter includes a complete database setup with PostgreSQL and Drizzle ORM, allowing you to:
+
+- Store user preferences and settings
+- Save conversation history
+- Track transaction history
+- Implement custom features requiring persistent data
+
+### Type-safe Routing
+
+The TanStack Router integration provides type-safe routing throughout the application, reducing errors and improving developer experience.
+
+<Note>
+This is a starter template and may not include all features or optimizations for production use (e.g the use of the OpenAI API key on the client). Please review and modify as necessary for your specific use case.
+</Note>
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.

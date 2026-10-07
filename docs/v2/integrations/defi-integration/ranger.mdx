@@ -1,0 +1,344 @@
+---
+title: 'Ranger Protocol'
+description: 'Learn how to interact with Ranger Protocol for perpetual trading operations'
+---
+
+Interact with Ranger Protocol to execute perpetual trading operations on Solana. Ranger provides a Smart Order Router (SOR) API that allows users to open, close, increase, and decrease positions across various venues like Flash, Jupiter, Drift, and Adrena.
+
+## Usage
+
+```typescript
+// Open a new perpetual position
+const signature = await agent.methods.openPerpTradeRanger({
+  symbol: "SOL",
+  side: "Long",
+  size: 1.0,
+  collateral: 10.0,
+  apiKey: "YOUR_API_KEY"
+});
+
+// Close an existing position
+const signature = await agent.methods.closePerpTradeRanger({
+  symbol: "SOL",
+  side: "Long",
+  apiKey: "YOUR_API_KEY"
+});
+```
+
+## Methods
+
+### openPerpTrade
+
+Open a new perpetual trading position using Ranger SOR API.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| symbol | string | Yes | Trading pair symbol (e.g., "SOL", "BTC") |
+| side | "Long" \| "Short" | Yes | Position direction |
+| size | number | Yes | Position size in tokens |
+| collateral | number | Yes | Collateral amount in USDC |
+| apiKey | string | Yes | Ranger API key |
+
+#### Example
+```typescript
+const signature = await agent.methods.openPerpTradeRanger({
+  symbol: "SOL",
+  side: "Long",
+  size: 1.0,
+  collateral: 10.0,
+  apiKey: "YOUR_API_KEY"
+});
+```
+
+### closePerpTrade
+
+Close an existing perpetual trading position.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| symbol | string | Yes | Trading pair symbol (e.g., "SOL", "BTC") |
+| side | "Long" \| "Short" | Yes | Position direction |
+| apiKey | string | Yes | Ranger API key |
+
+#### Example
+```typescript
+const signature = await agent.methods.closePerpTradeRanger({
+  symbol: "SOL",
+  side: "Long",
+  apiKey: "YOUR_API_KEY"
+});
+```
+
+### increasePerpPosition
+
+Increase the size of an existing perpetual position.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| symbol | string | Yes | Trading pair symbol (e.g., "SOL", "BTC") |
+| side | "Long" \| "Short" | Yes | Position direction |
+| size | number | Yes | Additional position size |
+| collateral | number | Yes | Additional collateral in USDC |
+| apiKey | string | Yes | Ranger API key |
+
+#### Example
+```typescript
+const signature = await agent.methods.increasePerpPositionRanger({
+  symbol: "SOL",
+  side: "Long",
+  size: 0.5,
+  collateral: 5.0,
+  apiKey: "YOUR_API_KEY"
+});
+```
+
+### decreasePerpPosition
+
+Decrease the size of an existing perpetual position.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| symbol | string | Yes | Trading pair symbol (e.g., "SOL", "BTC") |
+| side | "Long" \| "Short" | Yes | Position direction |
+| size | number | Yes | Size to decrease by |
+| apiKey | string | Yes | Ranger API key |
+
+#### Example
+```typescript
+const signature = await agent.methods.decreasePerpPositionRanger({
+  symbol: "SOL",
+  side: "Long",
+  size: 0.5,
+  apiKey: "YOUR_API_KEY"
+});
+```
+
+### withdrawBalance
+
+Withdraw available balance from Ranger.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| symbol | string | Yes | Token symbol (e.g., "USDC") |
+| amount | number | Yes | Amount to withdraw |
+| apiKey | string | Yes | Ranger API key |
+
+#### Example
+```typescript
+const signature = await agent.methods.withdrawBalanceRanger({
+  symbol: "USDC",
+  amount: 10.0,
+  apiKey: "YOUR_API_KEY"
+});
+```
+
+### withdrawCollateral
+
+Withdraw collateral from an existing position.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| symbol | string | Yes | Trading pair symbol (e.g., "SOL", "BTC") |
+| side | "Long" \| "Short" | Yes | Position direction |
+| collateral | number | Yes | Collateral amount to withdraw in USDC |
+| apiKey | string | Yes | Ranger API key |
+
+#### Example
+```typescript
+const signature = await agent.methods.withdrawCollateralRanger({
+  symbol: "SOL",
+  side: "Long",
+  collateral: 2.0,
+  apiKey: "YOUR_API_KEY"
+});
+```
+
+## Example Implementation
+
+```typescript
+import { SolanaAgentKit } from "solana-agent-kit";
+import { PublicKey } from "@solana/web3.js";
+
+async function rangerOperations(agent: SolanaAgentKit) {
+  try {
+    const apiKey = "YOUR_API_KEY";
+    
+    // Open a new long position on SOL
+    const openTx = await agent.methods.openPerpTradeRanger({
+      symbol: "SOL",
+      side: "Long",
+      size: 1.0,
+      collateral: 10.0,
+      apiKey
+    });
+    console.log("Open position transaction:", openTx);
+
+    // Increase the position
+    const increaseTx = await agent.methods.increasePerpPositionRanger({
+      symbol: "SOL",
+      side: "Long",
+      size: 0.5,
+      collateral: 5.0,
+      apiKey
+    });
+    console.log("Increase position transaction:", increaseTx);
+
+    // Decrease the position
+    const decreaseTx = await agent.methods.decreasePerpPositionRanger({
+      symbol: "SOL",
+      side: "Long",
+      size: 0.5,
+      apiKey
+    });
+    console.log("Decrease position transaction:", decreaseTx);
+
+    // Close the position
+    const closeTx = await agent.methods.closePerpTradeRanger({
+      symbol: "SOL",
+      side: "Long",
+      apiKey
+    });
+    console.log("Close position transaction:", closeTx);
+
+    // Withdraw balance
+    const withdrawTx = await agent.methods.withdrawBalanceRanger({
+      symbol: "USDC",
+      amount: 10.0,
+      apiKey
+    });
+    console.log("Withdraw balance transaction:", withdrawTx);
+    
+  } catch (error) {
+    console.error("Ranger operations failed:", error);
+  }
+}
+```
+
+## Implementation Details
+
+- **Smart Order Router (SOR)**: Ranger's SOR optimizes trade execution across multiple venues.
+- **Multiple Venues**: Supports trading across various platforms including Flash, Jupiter, Drift, and Adrena.
+- **Position Management**: Complete toolkit for opening, closing, increasing, and decreasing perpetual positions.
+- **Collateral Management**: Functions for adding and withdrawing collateral from positions.
+- **Data Access**: Comprehensive data access for positions, quotes, trade history, and market metrics.
+
+## About Ranger Protocol
+
+Ranger is a protocol designed to provide optimized perpetual trading on Solana. It offers a Smart Order Router (SOR) that routes orders across various trading venues to achieve the best execution. Key features include:
+
+1. **Cross-venue execution**: Trade across multiple venues with a single API
+2. **Capital efficiency**: Optimize collateral usage across positions
+3. **Low slippage**: Smart routing to minimize price impact
+4. **Advanced position management**: Sophisticated tools for managing perpetual positions
+5. **Rich market data**: Access to funding rates, liquidation data, and other market metrics
+
+## Error Handling
+
+```typescript
+try {
+  const signature = await agent.methods.openPerpTradeRanger({
+    symbol: "SOL",
+    side: "Long",
+    size: 1.0,
+    collateral: 10.0,
+    apiKey: "YOUR_API_KEY"
+  });
+} catch (error) {
+  if (error.message.includes("insufficient funds")) {
+    // Handle insufficient balance
+  } else if (error.message.includes("slippage")) {
+    // Handle price movement
+  }
+}
+```
+
+## Best Practices
+
+1. **API Key Management**
+   - Securely store and manage your Ranger API key
+   - Never expose your API key in client-side code
+   - Implement proper scoping and permissions for API keys
+
+2. **Position Sizing**
+   - Use appropriate position sizes relative to your capital
+   - Consider market volatility when determining leverage
+   - Monitor positions regularly to manage risk
+
+3. **Collateral Management**
+   - Maintain sufficient collateral to avoid liquidations
+   - Use the withdrawCollateral function judiciously
+   - Monitor health factors for positions
+
+4. **Error Handling**
+   - Implement robust error handling for all API calls
+   - Include retry logic for temporary failures
+   - Monitor transaction status until confirmed
+
+## Common Market Symbols
+
+- SOL-PERP
+- BTC-PERP
+- ETH-PERP
+- BONK-PERP
+- JTO-PERP
+
+## Response Format
+
+```typescript
+// Successful response for data query
+{
+  status: "success",
+  message: "Data fetched successfully",
+  positions: [
+    {
+      symbol: "SOL",
+      side: "Long",
+      size: 1.0,
+      collateral: 10.0,
+      entryPrice: 150.25,
+      liquidationPrice: 135.5,
+      pnl: 0.45,
+      // ...
+    },
+    // ...
+  ]
+}
+
+// Successful response for transaction
+{
+  status: "success",
+  message: "Transaction executed successfully",
+  signature: "5UfgJ5vVZxUxefDGqzqkVLHzHxVTyYH9StYyHKgvHYmXJgqJKxEqy9k4Rz9LpXrHF9kUZB7",
+  meta: {
+    venues: ["Flash"],
+    fees: 0.0045,
+    // ...
+  }
+}
+
+// Error response
+{
+  status: "error",
+  message: "Error message here"
+}
+```
+
+## Related Functions
+
+- `getBalance`: Check token balances
+- `getFundingRateArbs`: Get funding rate arbitrage opportunities
+- `getLiquidationsLatest`: Get the latest liquidation events
+- `getFundingRatesAccumulated`: Get accumulated funding rates
+- `getBorrowRatesAccumulated`: Get accumulated borrow rates 

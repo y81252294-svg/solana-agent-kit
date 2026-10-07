@@ -1,0 +1,40 @@
+---
+title: 'Blinks Plugin'
+description: 'Quick, fun interactions on Solana using Solana blinks'
+icon: 'bolt'
+---
+
+# Blinks Plugin
+
+The `@solana-agent-kit/plugin-blinks` plugin enables your agent to interact with Solana blinks, providing quick and fun ways to engage with the Solana ecosystem.
+
+## Installation
+
+Install the plugin alongside the core Solana Agent Kit:
+
+```bash
+npm install solana-agent-kit @solana-agent-kit/plugin-blinks
+```
+
+## Integration
+
+Add the Blinks plugin to your agent:
+
+```javascript
+import { SolanaAgentKit } from "solana-agent-kit";
+import BlinksPlugin from "@solana-agent-kit/plugin-blinks";
+
+const agent = new SolanaAgentKit(
+  wallet,
+  "YOUR_RPC_URL",
+  {
+    OPENAI_API_KEY: "YOUR_OPENAI_API_KEY",
+  }
+).use(BlinksPlugin);
+```
+
+## Available Tools
+
+| Tool Name | Description |
+|-----------|-------------|
+| `sendArcadeGames` | Integrate with arcade games on the Solana blockchain |

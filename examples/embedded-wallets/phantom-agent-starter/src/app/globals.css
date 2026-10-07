@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #1e2028;
+  --message-bg-user: #333D4A;
+  --message-bg-ai: #3D4856;
+  --text-primary: #ffffff;
+  --input-bg: rgba(42, 45, 60, 0.5);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --card-bg: #282c3a;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--background)] text-[var(--text-primary)];
+  }
+}
+
+@layer components {
+  .chat-message-user {
+    @apply rounded-2xl px-4 py-2 bg-gradient-to-br from-[#2B3542] to-[#333D4A] text-white w-full mb-4;
+  }
+  
+  .chat-message-ai {
+    @apply rounded-2xl px-4 py-2 bg-gradient-to-br from-[#2B3542] to-[#333D4A] text-white w-full mb-4;
+  }
+  
+  .chat-input {
+    @apply w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-2xl py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500;
+  }
+
+  .chat-container {
+    @apply bg-[var(--card-bg)] rounded-2xl shadow-lg p-6 max-w-4xl w-full mx-auto;
+  }
+}
+
+.prose {
+  @apply text-white;
+}
+
+.prose a {
+  @apply text-blue-400;
+}
+
+.prose code {
+  @apply text-gray-300 bg-gray-800 px-1 py-0.5 rounded;
+} 

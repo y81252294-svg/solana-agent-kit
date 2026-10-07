@@ -1,0 +1,172 @@
+---
+title: 'Misc Plugin'
+description: 'Miscellaneous tools and actions for the Solana blockchain'
+icon: 'toolbox'
+---
+
+# Misc Plugin
+
+The `@solana-agent-kit/plugin-misc` plugin provides a set of miscellaneous tools and actions for interacting with various services and protocols on the Solana blockchain. It includes functionalities for domain registration, webhook creation, and more.
+
+## Installation
+
+Install the plugin alongside the core Solana Agent Kit:
+
+```bash
+npm install solana-agent-kit @solana-agent-kit/plugin-misc
+```
+
+## Integration
+
+Add the Misc plugin to your agent:
+
+```javascript
+import { SolanaAgentKit } from "solana-agent-kit";
+import MiscPlugin from "@solana-agent-kit/plugin-misc";
+
+const agent = new SolanaAgentKit(
+  wallet,
+  "YOUR_RPC_URL",
+  {
+    OPENAI_API_KEY: "YOUR_OPENAI_API_KEY",
+  }
+).use(MiscPlugin);
+```
+
+## Available Tools
+
+### AllDomains
+| Tool Name | Description |
+|-----------|-------------|
+| `getAllDomainsTLDs` | Retrieve all top-level domains |
+| `getOwnedAllDomains` | Get all domains owned by a specific wallet |
+| `getOwnedDomainsForTLD` | Get domains owned by a wallet for a specific TLD |
+| `resolveDomain` | Resolve a domain to get its owner's public key |
+
+### Allora
+| Tool Name | Description |
+|-----------|-------------|
+| `getAllTopics` | Retrieve all topics |
+| `getInferenceByTopicId` | Get inference data by topic ID |
+| `getPriceInference` | Get price inference data |
+
+### Gibwork
+| Tool Name | Description |
+|-----------|-------------|
+| `createGibworkTask` | Create a new task on Gibwork |
+
+### Helius
+| Tool Name | Description |
+|-----------|-------------|
+| `createWebhook` | Create a new webhook to monitor transactions |
+| `deleteWebhook` | Delete an existing webhook |
+| `getAssetsByOwner` | Get assets owned by a specific wallet |
+| `getWebhook` | Retrieve webhook details |
+| `parseTransaction` | Parse a Solana transaction |
+
+### Alchemy
+The Alchemy tools are additive to the existing Helius and RPC provider integrations. They do not replace any existing provider and intentionally do not include DAS/NFT asset tools.
+
+Configure Alchemy credentials only when using these tools. RPC, price, and portfolio helpers use `ALCHEMY_API_KEY`; Notify webhook helpers use `ALCHEMY_NOTIFY_AUTH_TOKEN`.
+
+| Tool Name | Description |
+|-----------|-------------|
+| `alchemySolanaRpcRequest` | Call Solana JSON-RPC through Alchemy |
+| `alchemyGetPriorityFeeEstimate` | Fetch Solana priority fee estimates through Alchemy |
+| `alchemyGetTokenPricesBySymbol` | Fetch current token prices by symbol |
+| `alchemyGetTokenPricesByAddress` | Fetch current token prices by network and token address |
+| `alchemyGetHistoricalTokenPrices` | Fetch historical token prices |
+| `alchemyGetPortfolioTokens` | Fetch wallet token balances, metadata, and prices |
+| `alchemyCreateAddressActivityWebhook` | Create a Solana Address Activity webhook |
+| `alchemyDeleteWebhook` | Delete an Alchemy Notify webhook |
+| `alchemyListWebhooks` | List team webhooks |
+| `alchemyUpdateWebhookAddresses` | Add or remove addresses from an Address Activity webhook |
+| `alchemyReplaceWebhookAddresses` | Replace the full address list for an Address Activity webhook |
+| `alchemyVerifyWebhookSignature` | Verify `X-Alchemy-Signature` webhook payloads |
+| `getAlchemySolanaEndpointInfo` | Get RPC, WebSocket, gRPC, and x402 reference endpoint templates |
+
+### SNS
+| Tool Name | Description |
+|-----------|-------------|
+| `resolveSolDomain` | Resolve a .sol domain |
+| `registerDomain` | Register a new .sol domain |
+| `getPrimaryDomain` | Get the primary domain for a wallet |
+| `getMainAllDomainsDomain` | Get the main domain for AllDomains |
+| `getAllRegisteredAllDomains` | Get all registered domains |
+
+### Squads
+| Tool Name | Description |
+|-----------|-------------|
+| `transferFromMultisigTreasury` | Transfer funds from a multisig treasury |
+| `rejectMultisigProposal` | Reject a multisig proposal |
+| `executeMultisigProposal` | Execute a multisig proposal |
+| `depositToMultisigTreasury` | Deposit funds into a multisig treasury |
+| `createMultisig` | Create a new multisig account |
+| `createMultisigProposal` | Create a new multisig proposal |
+
+### Coingecko
+| Tool Name | Description |
+|-----------|-------------|
+| `getCoingeckoTokenInfo` | Get token information from Coingecko |
+| `getCoingeckoTopGainers` | Get top gaining tokens |
+| `getCoingeckoLatestPools` | Get the latest pools |
+| `getCoingeckoTrendingPools` | Get trending pools |
+| `getCoingeckoTokenPriceData` | Get token price data |
+| `getCoingeckoTrendingTokens` | Get trending tokens |
+
+### ElfaAi
+| Tool Name | Description |
+|-----------|-------------|
+| `getElfaAiApiKeyStatus` | Check the status of an ElfaAi API key |
+| `getSmartMentions` | Get smart mentions using ElfaAi |
+| `getSmartTwitterAccountStats` | Get Twitter account stats using ElfaAi |
+| `getTopMentionsByTicker` | Get top mentions by ticker using ElfaAi |
+| `getTrendingTokensUsingElfaAi` | Get trending tokens using ElfaAi |
+| `pingElfaAiApi` | Ping the ElfaAi API |
+| `searchMentionsByKeywords` | Search mentions by keywords using ElfaAi |
+
+### Switchboard
+| Tool Name | Description |
+|-----------|-------------|
+| `simulate_switchboard_feed` | Simulate a switchboard feed |
+
+### Tiplink
+| Tool Name | Description |
+|-----------|-------------|
+| `create_TipLink` | Create a tiplink |
+
+### Crossmint
+| Tool Name | Description |
+|-----------|-------------|
+| `checkout` | Checkout an order |
+| `confirmOrder` | Confirm an order |
+
+### HOMOMEMETUS
+| Tool Name | Description |
+|-----------|-------------|
+| `fetch_oldest_tokens` | Fetch the oldest token list among tokens created in the last 24h |
+| `fetch_recent_tokens` | Fetch the most recent tokens created in the last 24h |
+| `fetch_token_by_creator` | Fetch tokens filtered by a specific creator |
+| `fetch_token_by_initializer` | Filter tokens initialized by a specific address |
+| `fetch_token_by_mint` | Filter tokens by a specific token (mint) address |
+| `fetch_token_by_signature` | Filter tokens by a specific transaction signature |
+| `fetch_tokens_by_creators` | Filter tokens created by a list of creator addresses |
+| `fetch_tokens_by_initializers` | Filter tokens initialized by a list of addresses |
+| `fetch_tokens_by_duration` | Filter tokens by creation time |
+| `fetch_tokens_by_market_cap` | Filter tokens by their market cap |
+| `fetch_tokens_by_metadata` | Filter tokens by token metadata |
+| `fetch_tokens_by_mints` | Filter tokens by a list of mint addresses |
+
+### OTTERSEC
+| Tool Name | Description |
+|-----------|-------------|
+| `create_verification_pda` | Generate a PDA for program verification |
+| `decode_verification_pda_data` | Decode the PDA data composed in hex |
+| `get_program_build_log` | Get build logs for a solana program |
+| `get_program_verification_status` | Get program verification status |
+| `get_verification_job_status` | Get status of an async verification job |
+| `get_verified_programs` | Get list of all verified programs |
+| `verify_program` | Verify a Solana program |
+
+
+For more detailed information, please refer to the full documentation at [docs.sendai.fun](https://docs.sendai.fun).
