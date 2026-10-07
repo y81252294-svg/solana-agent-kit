@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solana Agent Kit | Autonomous AI Agents on Solana</title>
+  <meta name="description" content="Connect any AI Agent to Solana protocols. Autonomous swaps, staking, NFTs, and 60+ on-chain actions. Designed & Developed by Shourya Goyal.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Header / Navigation -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <span class="sol-icon">◎</span>
+        <span class="brand-text">Solana<span class="gradient-text">AgentKit</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#playground">Interactive Demo</a>
+        <a href="#plugins">Plugins</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="#author">Creator</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="https://github.com/y81252294-svg/solana-agent-kit" target="_blank" rel="noopener noreferrer" class="btn btn-secondary nav-btn" id="github-nav-btn">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/shourya-goyal-804632254/" target="_blank" rel="noopener noreferrer" class="btn btn-primary nav-btn" id="linkedin-nav-btn">
+          Connect
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Designed & Developed by <strong>Shourya Goyal</strong></span>
+      </div>
+      <h1 class="hero-title">
+        Empower AI Agents with <br>
+        <span class="gradient-text">Solana Superpowers</span>
+      </h1>
+      <p class="hero-description">
+        The ultimate open-source toolkit connecting LLMs and autonomous agents to 60+ Solana protocols. Execute autonomous trades, token launches, compressed airdrops, and DeFi strategies in seconds.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#quickstart" class="btn btn-gradient btn-lg">Get Started</a>
+        <a href="#playground" class="btn btn-secondary btn-lg">Launch Interactive Demo</a>
+        <a href="https://github.com/y81252294-svg/solana-agent-kit" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-lg">Star on GitHub ⭐</a>
+      </div>
+
+      <!-- Quick Metrics Ribbon -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">60+</div>
+          <div class="metric-label">Solana Actions</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">&lt; 400ms</div>
+          <div class="metric-label">Tx Finality Ready</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">10+</div>
+          <div class="metric-label">DeFi & NFT Protocols</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">100%</div>
+          <div class="metric-label">Open Source (Apache 2.0)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Demo / Playground -->
+  <section class="section" id="playground">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-tag">Interactive Simulation</div>
+        <h2 class="section-title">See Autonomous Agents in Action</h2>
+        <p class="section-subtitle">Click an action below to simulate how an autonomous agent invokes tools, signs transactions, and interacts with the Solana blockchain.</p>
+      </div>
+
+      <div class="playground-layout">
+        <!-- Action Control Panel -->
+        <div class="playground-controls">
+          <h3 class="controls-title">Choose Protocol Action</h3>
+          <div class="action-buttons-list">
+            <button class="action-btn active" data-action="swap" id="btn-action-swap">
+              <span class="action-icon">💱</span>
+              <div class="action-meta">
+                <span class="action-name">Jupiter DEX Swap</span>
+                <span class="action-desc">Swap 0.5 SOL to USDC</span>
+              </div>
+            </button>
+            <button class="action-btn" data-action="airdrop" id="btn-action-airdrop">
+              <span class="action-icon">⚡</span>
+              <div class="action-meta">
+                <span class="action-name">Light Compressed Airdrop</span>
+                <span class="action-desc">Distribute tokens to 1,000 wallets</span>
+              </div>
+            </button>
+            <button class="action-btn" data-action="nft" id="btn-action-nft">
+              <span class="action-icon">🎨</span>
+              <div class="action-meta">
+                <span class="action-name">Metaplex Core NFT</span>
+                <span class="action-desc">Mint asset with on-chain metadata</span>
+              </div>
+            </button>
+            <button class="action-btn" data-action="launch" id="btn-action-launch">
+              <span class="action-icon">🚀</span>
+              <div class="action-meta">
+                <span class="action-name">PumpPortal Token Launch</span>
+                <span class="action-desc">Deploy memecoin with custom liquidity</span>
+              </div>
+            </button>
+            <button class="action-btn" data-action="stake" id="btn-action-stake">
+              <span class="action-icon">🔒</span>
+              <div class="action-meta">
+                <span class="action-name">Native Staking</span>
+                <span class="action-desc">Delegate 2.0 SOL to validator</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Terminal Viewport -->
+        <div class="playground-terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="terminal-title">agent-runtime@solana-agent-kit: ~</span>
+            <button class="terminal-copy-btn" id="terminal-run-again">Re-run</button>
+          </div>
+          <div class="terminal-body" id="terminal-output">
+            <!-- Output generated via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Features Grid -->
+  <section class="section" id="features">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-tag">Capabilities</div>
+        <h2 class="section-title">Built for Modern AI Architecture</h2>
+        <p class="section-subtitle">Everything you need to build intelligent, autonomous agents on Solana.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🔄</div>
+          <h3 class="feature-title">Universal Model Support</h3>
+          <p class="feature-desc">Integrates seamlessly with LangChain, Vercel AI SDK, OpenAI, Anthropic Claude, and Model Context Protocol (MCP).</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🪙</div>
+          <h3 class="feature-title">Token & SPL Ops</h3>
+          <p class="feature-desc">Deploy tokens, transfer assets, check balances, manage liquidity pools, and distribute zk-compressed airdrops via Light Protocol.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">📈</div>
+          <h3 class="feature-title">DeFi Routing</h3>
+          <p class="feature-desc">Best-rate routing via Jupiter Exchange, Meteora DLMM pools, Raydium AMMv4/CLMM, and Orca Whirlpools.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🖼️</div>
+          <h3 class="feature-title">NFTs & Digital Assets</h3>
+          <p class="feature-desc">Full support for Metaplex Core & Bubblegum standards, automated collection creation, and 3.Land listings.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">⚡</div>
+          <h3 class="feature-title">Solana Blinks & Actions</h3>
+          <p class="feature-desc">Execute and generate shareable Solana Actions and Blinks natively from LLM agent reasoning steps.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🛡️</div>
+          <h3 class="feature-title">Security & Key Safety</h3>
+          <p class="feature-desc">Support for embedded wallets (Privy, Turnkey, Phantom, Para) and keypair encryptions with zero plaintext leakage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modular Plugin Architecture -->
+  <section class="section" id="plugins">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-tag">Architecture</div>
+        <h2 class="section-title">Modular Plugin Ecosystem</h2>
+        <p class="section-subtitle">Import only the modules your agent needs. Designed for ultra-lean bundle size and maximum performance.</p>
+      </div>
+
+      <div class="plugins-grid">
+        <div class="plugin-pill">
+          <div class="plugin-header">
+            <span class="plugin-badge">Core</span>
+            <h4>solana-agent-kit</h4>
+          </div>
+          <p>Main agent instance, keypair manager, and RPC connectivity.</p>
+        </div>
+        <div class="plugin-pill">
+          <div class="plugin-header">
+            <span class="plugin-badge">DeFi</span>
+            <h4>@solana-agent-kit/plugin-defi</h4>
+          </div>
+          <p>Jupiter swaps, Raydium, Meteora, Drift vaults, and Manifest limit orders.</p>
+        </div>
+        <div class="plugin-pill">
+          <div class="plugin-header">
+            <span class="plugin-badge">Tokens</span>
+            <h4>@solana-agent-kit/plugin-token</h4>
+          </div>
+          <p>SPL token deployment, transfers, Pyth price feeds, RugCheck, and Light airdrops.</p>
+        </div>
+        <div class="plugin-pill">
+          <div class="plugin-header">
+            <span class="plugin-badge">NFT</span>
+            <h4>@solana-agent-kit/plugin-nft</h4>
+          </div>
+          <p>Metaplex Core minting, 3.Land market listings, and Tensor integration.</p>
+        </div>
+        <div class="plugin-pill">
+          <div class="plugin-header">
+            <span class="plugin-badge">Protocol</span>
+            <h4>@solana-agent-kit/adapter-mcp</h4>
+          </div>
+          <p>Expose all Solana actions to Claude Desktop and any MCP client.</p>
+        </div>
+        <div class="plugin-pill">
+          <div class="plugin-header">
+            <span class="plugin-badge">Web3</span>
+            <h4>@solana-agent-kit/plugin-blinks</h4>
+          </div>
+          <p>Direct interaction with Solana dialect blinks and actions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quickstart Code Section -->
+  <section class="section" id="quickstart">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-tag">Quickstart</div>
+        <h2 class="section-title">Start in 3 Lines of Code</h2>
+        <p class="section-subtitle">Install the package and give your agent immediate Solana protocol access.</p>
+      </div>
+
+      <div class="code-wrapper">
+        <div class="code-header">
+          <div class="code-tabs">
+            <button class="code-tab active" data-tab="pnpm">pnpm</button>
+            <button class="code-tab" data-tab="npm">npm</button>
+            <button class="code-tab" data-tab="yarn">yarn</button>
+          </div>
+          <button class="copy-code-btn" id="copy-install-btn">Copy</button>
+        </div>
+        <pre class="code-block"><code id="install-command">pnpm add solana-agent-kit @solana/web3.js</code></pre>
+      </div>
+
+      <div class="code-wrapper code-ts-wrapper">
+        <div class="code-header">
+          <span class="code-file-title">agent.ts</span>
+          <button class="copy-code-btn" id="copy-snippet-btn">Copy Code</button>
+        </div>
+        <pre class="code-block"><code><span class="kw">import</span> { SolanaAgentKit, createSolanaTools } <span class="kw">from</span> <span class="str">"solana-agent-kit"</span>;
+
+<span class="com">// Initialize agent with private key and RPC</span>
+<span class="kw">const</span> agent = <span class="kw">new</span> <span class="fn">SolanaAgentKit</span>(
+  process.env.SOLANA_PRIVATE_KEY!,
+  <span class="str">"https://api.mainnet-beta.solana.com"</span>,
+  process.env.OPENAI_API_KEY!
+);
+
+<span class="com">// Create LangChain or Vercel AI SDK tools</span>
+<span class="kw">const</span> tools = <span class="fn">createSolanaTools</span>(agent);
+
+<span class="com">// Agent is now fully equipped to autonomously trade, stake & deploy!</span>
+console.<span class="fn">log</span>(<span class="str">"Agent initialized with"</span>, tools.length, <span class="str">"Solana actions."</span>);</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Creator Section -->
+  <section class="section author-section" id="author">
+    <div class="section-container">
+      <div class="author-card">
+        <div class="author-avatar-wrapper">
+          <div class="author-avatar">SG</div>
+        </div>
+        <div class="author-info">
+          <div class="author-tag">Project Author & Designer</div>
+          <h2 class="author-name">Shourya Goyal</h2>
+          <p class="author-bio">
+            AI Engineer & Blockchain Builder passionate about bringing autonomous agency to decentralized infrastructure. Architect of Solana Agent Kit customization, modular plugins, and high-performance Web3 tooling.
+          </p>
+          <div class="author-links">
+            <a href="https://github.com/y81252294-svg" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub Profile
+            </a>
+            <a href="https://www.linkedin.com/in/shourya-goyal-804632254/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              Connect on LinkedIn
+            </a>
+            <a href="https://github.com/y81252294-svg/solana-agent-kit" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+              Explore Repository
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="nav-brand">
+          <span class="sol-icon">◎</span>
+          <span class="brand-text">Solana<span class="gradient-text">AgentKit</span></span>
+        </div>
+        <p class="footer-copy">Designed & Developed by <strong>Shourya Goyal</strong>. Open-source under Apache-2.0 License.</p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/y81252294-svg" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/shourya-goyal-804632254/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/y81252294-svg/solana-agent-kit" target="_blank" rel="noopener noreferrer">Repository</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
